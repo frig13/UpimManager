@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Icon=/usr/local/share/upim/icon/upim.png
+Type=Application
+Categories=Office;
+Exec=python /usr/local/lib/python2.7/dist-packages/UpimManager/DIARY.py
+X-MATE-Autostart-enabled=true
+Name[ru_RU]=UpimManager
+Name=UpimManager
+Comment[ru_RU]=
+Comment=
+

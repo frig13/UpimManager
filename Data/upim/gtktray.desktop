@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Exec=python /usr/local/lib/python2.7/dist-packages/UpimManager/gtktray.py
+Hidden=false
+X-MATE-Autostart-enabled=true
+Name=Gtray
+Comment=

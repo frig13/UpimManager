@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Icon=/usr/local/share/upim/icon/up.png
+Type=Application
+Categories=Office;
+Exec=python /usr/local/lib/python2.7/dist-packages/UpimManager/panel_richtext.py
+X-MATE-Autostart-enabled=true
+Name[ru_RU]=UpimWriter
+Name=UpimWriter
+Comment[ru_RU]=
+Comment=
+
