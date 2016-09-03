@@ -55,13 +55,11 @@ class Treya():
 
 	def Showm(self, widget):	
 		if os.path.exists('/tmp/look'):
-			os.system('mpg123 -q --gain 30 ' + '/usr/local/share/upim/Music/chpok.mp3 &')
 			fl = open('/tmp/look', 'rb').read()
 			os.kill(int(fl), 9)
 			os.remove('/tmp/look')
 		else:
 			x,y,z = gtk.status_icon_position_menu(self.menu, self.tray)	
-			os.system('mpg123 -q --gain 30 ' + '/usr/local/share/upim/Music/dzin.mp3 &')
 			os.system('python ' + sys_inf.UPIM_PATH + 'Calendar.py ' + str(x) + ' ' + str(y) + ' &')	
 	
 Treya()		

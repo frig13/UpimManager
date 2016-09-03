@@ -95,26 +95,25 @@ class CalenFrame(wx.Frame):
 			self.OnCloseWin()
 			
 	def Napom(self, event):
-		os.system('mpg123 -q --gain 30 ' + '/usr/local/share/upim/Music/phone-incoming-call.mp3 &')
 		os.system('python ' + sys_inf.UPIM_PATH + 'soxr_nap.py &')
 
 	def Tuda(self, event):
 		self.Pr(0)
-		self.Muz()
+		
 		
 	def Suda(self, event):
 		self.Pr(1)
-		self.Muz()
+		
 		
 	def Mtuda(self, event):
 		self.Prm(0)
 		self.Room()
-		self.Muz()
+		
 		
 	def Msuda(self, event):
 		self.Prm(1)
 		self.Room()
-		self.Muz()
+		
 		
 	def Rooyt(self):
 		o = str(self.good_f)
@@ -128,7 +127,7 @@ class CalenFrame(wx.Frame):
 		self.Pr(2)
 		self.Prm(2)
 		self.modtxt.SetLabel(time.strftime('%B'))
-		self.Muz()
+		
 		
 # обработка годов	
 	def Pr(self, on):
@@ -249,9 +248,7 @@ class CalenFrame(wx.Frame):
 			self.v = _('december')
 		return self.v
 		
-	def Muz(self):
-		os.system('mpg123 -q --gain 30 ' + '/usr/local/share/upim/Music/tab-pressed.mp3 &')
-		
+	
 # старый добрый look, чтоб десять календарей не нащёлкать	
 	def OnCloseWindow(self, event):
 		os.remove('/tmp/look')
