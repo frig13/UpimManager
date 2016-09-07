@@ -58,6 +58,10 @@ try:
 			copy_file('Data/icon/' + ic, LOC_PREFIX + 'share/upim/icon/' + ic)
 		print 'Copyring icon...\n'
 		
+		if os.path.exists('/usr/share/applications'):
+			pass
+		else:
+			os.mkdir('/usr/share/applications')
 		copy_file('Data/Desktop/UpimManager.desktop', '/usr/share/applications/UpimManager.desktop')
 		copy_file('Data/Desktop/UpimWriter.desktop', '/usr/share/applications/UpimWriter.desktop')
 		print 'Create Desktop files\n'
