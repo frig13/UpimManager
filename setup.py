@@ -120,7 +120,7 @@ try:
 			os.rmdir(LOC_PREFIX + 'share/upim')
 			print 'Removing ShareUpim dir \n'
 		
-		print "================================================\n Upim Manager removed successfull\n If you remove all files:\n$ rm -rf /home/$USER/.Upim \n$ rm -rf /home/$USER/.config/Upim\n$ rm -rf /home/$USER/.config/autostart/cronpy.desktop\n$ rm -rf /home/$USER/.config/autostart/gtktray.desktop\n================================================"
+		print "================================================\n Upim Manager removed successfull\n If you remove all files, to enter:\n$ rm -rf /home/$USER/.Upim \n$ rm -rf /home/$USER/.config/Upim\n$ rm /home/$USER/.config/autostart/cronpy.desktop\n$ rm /home/$USER/.config/autostart/gtktray.desktop\n================================================"
 	else:
 		print "--------------\n Stupid enter!\n--------------"
 		sys.exit(0)
