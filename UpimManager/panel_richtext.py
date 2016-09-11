@@ -260,13 +260,13 @@ class Upim_Writer(wx.Frame):
 				d2 = i.split(';')[1] + 3*'\t'
 				try:
 					if i.split(';')[2]:
-						im = wx.Image(i.split(';')[2], wx.BITMAP_TYPE_ANY)   
+						im = wx.Image(i.split(';')[2].strip(), wx.BITMAP_TYPE_ANY)   
 						self.win.WriteImage(im)
 				except IndexError:
 					pass
+				break
 			else:
 				d2 = ''
-				
 		if conf_db.Dobd_class('posfile').baz_vst() != 'Not':
 			self.win.LoadFile(conf_db.Dobd_class('posfile').baz_vst())
 		else:

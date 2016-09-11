@@ -448,6 +448,7 @@ class Upim_Manager(wx.Frame):
 		for i in open(files, 'rb').readlines():
 			if time.strftime('%d') + ':' + time.strftime('%h') == i.split(';')[0]:
 				day = i.split(';')[1]
+				break
 			else:
 				if time.strftime('%A') == _("Saturday"):
 					day = _('Pre-holiday')
@@ -558,13 +559,14 @@ advanced search capabilities and more.
 		files = sys_inf.CONF_PATH + 'prz.ini'
 		for i in open(files, 'rb').readlines():
 			if time.strftime('%d') + ':' + time.strftime('%h') == i.split(';')[0]:
-				d = i.split(';')[1] + 3*'\t'
+				d = i.split(';')[1] + 5*'\t'
 				try:
 					if i.split(';')[2]:
-						im = wx.Image(i.split(';')[2], wx.BITMAP_TYPE_ANY)   
+						im = wx.Image(i.split(';')[2].strip(), wx.BITMAP_TYPE_ANY)   
 						self.win.WriteImage(im)
 				except IndexError:
 					pass
+				break
 			else:
 				d = ''
 				
