@@ -10,7 +10,7 @@ import time
 import os
 import sys_inf
 
-
+# простой скрипт ежесекундно сканирующий файл напоминаний; должен быть в автозагрузке, если эти угодны.
 def Cron_Twoy():
 	file_open = sys_inf.CONF_PATH + '.diarus.ini'
 	for i in open(file_open).readlines():

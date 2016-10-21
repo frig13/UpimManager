@@ -15,11 +15,13 @@ GetTxt()
 class TabPan(wx.Panel):# панель основных настроек
 	def __init__(self, parent):
 		wx.Panel.__init__(self, parent=parent)
+# ===============================================================			
 		#рисуем гробики
 		wx.StaticLine(self, -1, (12, 2), (210, 5), style=wx.LI_HORIZONTAL)
 		wx.StaticLine(self, -1, (12, 79), (210, 5), style=wx.LI_HORIZONTAL)
 		wx.StaticLine(self, -1, (220, 5), (5, 240), style=wx.LI_VERTICAL)
 		wx.StaticLine(self, -1, (10, 5), (5, 240), style=wx.LI_VERTICAL)
+		
 # ===============================================================		
 		wx.StaticText(self, -1, _("Load note to old session"), (30, 10))
 		self.chk = wx.CheckBox(self, -1, _("Load"), (65, 40))

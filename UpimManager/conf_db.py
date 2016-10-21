@@ -5,7 +5,7 @@ Created on Fri Feb 14 16:14:33 2016
 
 @author: Prohodimec 
 """
-# промтенькие функции и классы для работы с bd
+# проcтенькие функции и классы для работы с bd
 import shelve
 import os
 import sys_inf
@@ -42,7 +42,7 @@ def Ds(slovo, lists):
 			lists.append(i.split('.')[0])
 
 	o.close()
-
+# база индекса заметок для поиска
 def searcingdb(tops):
 	fills = sys_inf.CONF_PATH + 'index.db'
 	op = shelve.open(fills)
@@ -57,7 +57,7 @@ def dobdb(keynam, texnam):
 	bd = shelve.open(fils)
 	bd[keynam] = texnam
 	bd.close()
-
+# база недели
 def dbdb(keynam, texnam):
 	fils = sys_inf.CONF_PATH + 'ned.db'
 	bd = shelve.open(fils)
@@ -77,6 +77,7 @@ def sdb(k):
 	bdlw = shelve.open(filw)
 	return bdlw[k]
 	
+# история заметок на сессию для UM	
 nedlist = []
 def Listrem(fils):
 	if len(nedlist) > 0:

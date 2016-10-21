@@ -6,6 +6,7 @@ import os
 import sys_inf
 sys_inf.GetTxt()
 
+# простой класс кнопки в трее, меню, бинды...
 class Treya():
 	def __init__(self):
 		self.tray = gtk.StatusIcon()
@@ -25,13 +26,13 @@ class Treya():
 		upimw.connect("activate", self.Upwshow)
 		self.menu.append(upimw)
 		img2 = gtk.Image()
-		img2.set_from_file(sys_inf.ICON_PATH + 'nas1.png')
+		img2.set_from_file(sys_inf.ICON_PATH + 'nas2.png')
 		nas = gtk.ImageMenuItem(_("Settings"))
 		nas.set_image(img2)
 		nas.connect("activate", self.Wrshow)
 		self.menu.append(nas)
 		img3 = gtk.Image()
-		img3.set_from_file(sys_inf.ICON_PATH + '6.png')
+		img3.set_from_file(sys_inf.ICON_PATH + 'cut3.png')
 		vux = gtk.ImageMenuItem(_("Exit"))
 		vux.set_image(img3)
 		vux.connect("activate", gtk.main_quit)
@@ -48,8 +49,10 @@ class Treya():
 		
 	def Upshow(self, widget):
 		os.system('python ' + sys_inf.UPIM_PATH + 'DIARY.py &') 
+	
 	def Upwshow(self, widget):
 		os.system('python ' + sys_inf.UPIM_PATH + 'panel_richtext.py &')
+	
 	def Wrshow(self, widget):
 		os.system('python ' + sys_inf.UPIM_PATH + 'configuration.py &') 	
 

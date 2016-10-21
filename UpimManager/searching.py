@@ -13,6 +13,7 @@ import shelve
 import tx
 sys_inf.GetTxt()
 
+# поиск заметок в текстовой базе данных, что синхронизируется со структурой richtext
 class TabSearh(wx.Panel):
 	def __init__(self, parent, wop):
 		wx.Panel.__init__(self, parent=parent)
@@ -20,18 +21,22 @@ class TabSearh(wx.Panel):
 		self.dis = sys_inf.Sizer()
 		self.SetMinSize((self.dis[6], self.dis[2]))
 		self.SetBackgroundColour(str(conf_db.Dobd_class('cvettr').baz_vst()))
+		
 		tf = wx.StaticText(self, -1, _("Find notes"), (55, 4))
 		font = wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD, False, 'Sans')
 		tf.SetFont(font)
+		
 		self.tex = wx.TextCtrl(self, -1, _("Write text for searching"), pos=(2, 30), size=(self.dis[6]/1.4, 25))
-		self.tex.SetBackgroundColour('black')
+		#self.tex.SetBackgroundColour('black')
+		
 		self.tcTrees = wx.TreeCtrl(self, size=(255, self.dis[2] - 60), pos=(2, 60))
 		self.tcTrees.SetBackgroundColour(str(conf_db.Dobd_class('cvettr').baz_vst()))
 		self.tcTrees.SetForegroundColour(str(conf_db.Dobd_class('cvetmencr').baz_vst()))
 		
 		buttons = wx.Button(self, label=_("Search"), size=(64, 25), pos=(self.dis[6]/1.4+5, 30))
 		buttons.Bind(wx.EVT_BUTTON, self.Nah, buttons)
-		buttons.SetBackgroundColour('#421700')
+		#buttons.SetBackgroundColour('#421700')
+		
 		self.tcTrees.Bind(wx.EVT_TREE_ITEM_RIGHT_CLICK, self.RightClick)
 		self.tcTrees.Bind(wx.EVT_TREE_SEL_CHANGED, self.SelChan)
 		self.flist = []; self.filelist = []; self.filel = []

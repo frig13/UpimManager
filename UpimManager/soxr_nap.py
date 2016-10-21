@@ -8,11 +8,11 @@ Created on Fri May 14 16:14:33 2016
 import sys_inf
 import wx, os, time
 sys_inf.GetTxt()
-
+# Напоминание в diarus.ini
 class Soxr_Pan(wx.Panel):
 	def __init__(self, parent, ID):
 		wx.Panel.__init__(self, parent, -1, size=(450, 340))
-		self.SetBackgroundColour('#161627')
+		#self.SetBackgroundColour('#161627')
 		wx.StaticText(self, -1,_("Create remember"),pos=(140, 4))
 		self.day = wx.TextCtrl(self, pos=(6, 34), size=(50, 30))
 		self.day.AppendText(time.strftime('%d'))

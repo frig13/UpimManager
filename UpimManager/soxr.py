@@ -5,6 +5,7 @@ import  wx.calendar
 import sys_inf
 sys_inf.GetTxt()
 
+# сохранение для UW
 class Soxr(wx.Panel):
 	def __init__(self, parent, ID, x):
 		self.x = x

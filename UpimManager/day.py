@@ -26,6 +26,7 @@ class Seg_Day(wx.Panel):
 		self.srt = open(sys_inf.DATA_PATH + 'Pattern/shab', 'rb').read()
 		self.poth = sys_inf.DATA_PATH + 'Pattern/' + 'stock'
 		self.wline = str(int(conf_db.Dobd_class('dl').baz_vst())*'+')
+		
 # определяется язык для вставки заголовка	
 		if sys_inf.Loc() == 'ru_RU':
 			self.nam = time.strftime('%A') + ':' + sys_inf.Once() + ':' + time.strftime('%h.') + time.strftime('%G') + "года"
@@ -33,6 +34,7 @@ class Seg_Day(wx.Panel):
 		else:
 			self.nam = time.strftime('%A') + ':' + sys_inf.Once() + ':' + time.strftime('%h') + time.strftime('%G') + " year"
 			self.namc = time.strftime('%A, ') + sys_inf.Once() + time.strftime(' %h.') + time.strftime(' %G') + " year\n"
+
 # сегодня - в базе		
 		try:
 			if conf_db.sdb('20:70'):
@@ -41,6 +43,7 @@ class Seg_Day(wx.Panel):
 			conf_db.dbdb('20:70', self.nam)
 	
 		self.Txts('2.28', '18', 'a', None)		
+
 # кнопочки!..
 		self.st = buttons.GenButton(self, -1, label=_("Save as"), size=(self.dis[0]/16, 18), pos=(25,0))
 		self.st.SetBackgroundColour('#3B3B3B')
@@ -63,6 +66,7 @@ class Seg_Day(wx.Panel):
 		self.cl.Bind(wx.EVT_BUTTON, self.Cl, self.cl)
 
 		self.LtBox()
+		
 #	листбокс и его бинды
 	def LtBox(self):	
 		ls = []
@@ -81,6 +85,7 @@ class Seg_Day(wx.Panel):
 			path_txt = sys_inf.DATA_PATH + 'Text/' + ztx + '.txt'
 			tz = open(path_txt, 'rb').read()	
 			self.Txts('2.28', '18', 'b', tz)
+			
 #два клика по итемке и бинды меню	
 	def OnFileOpen(self, event):
 		self.menu = wx.Menu()
@@ -148,15 +153,18 @@ class Seg_Day(wx.Panel):
 			g = ' года\n'
 		else:
 			g = ' year\n'
+			
 		strepl = str(self.chc.GetValue()) + ' ' + self.chm.GetValue().encode('utf-8').decode('latin-1').encode('latin-1') + ' ' + str(self.chg.GetValue()) + g
+		
 		txts = str(self.chc.GetValue()) + ':' + self.chm.GetValue().encode('utf-8').decode('latin-1').encode('latin-1') + ':' + str(self.chg.GetValue()) + ':' + self.name.GetValue().encode('utf-8').decode('latin-1').encode('latin-1') + '.txt'
+		
 		path = sys_inf.DATA_PATH + 'Text/'
 
-		self.Text1.Replace(76, 106, strepl)
+		self.Text1.Replace(0, 200, strepl)
 		self.Text1.SaveFile(path + txts)
 		self.pan.Destroy()
 
-#чистим моск	
+#чистим моск, йощь твою...
 	def Cl(self, event):
 		self.Text1.Clear()		
 		self.Text1.WriteText(self.wline + '\n' + '                          ' + self.namc + self.wline + self.srt)
@@ -172,6 +180,7 @@ class Seg_Day(wx.Panel):
 				self.Text1.Hide()
 		except AttributeError:
 			pass
+			
 		font3 = wx.Font(int(conf_db.Dobd_class('fontrazdays').baz_vst()), wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD, False, conf_db.Dobd_class('fontdays').baz_vst())
 		self.Text1 = wx.TextCtrl(self, -1,size=(self.dis[9], self.dis[1]/float(num)), pos=(25 + self.dis[0]/7, int(position)), style=wx.TE_MULTILINE)
 		self.Text1.SetFont(font3)
@@ -190,16 +199,15 @@ class Seg_Day(wx.Panel):
 			else:
 				self.Text1.Clear()
 
-				self.Text1.WriteText(self.wline + '                          ' + self.namc + self.wline + self.srt)	
+				self.Text1.WriteText(self.wline + '\n' + '                          ' + self.namc + self.wline + self.srt)	
 		else:
 			self.Text1.Clear()
 			self.Text1.AppendText(txtx)
 		self.Text1.ShowPosition(70)	
+		
 #стоит только двинуть мышкой...	
 	def OnMouseEvent(self, event):
 		if event.GetPosition()[1] != '':
 			conf_db.dbdb('20:70', self.nam)
 			if self.marker == 'a':
 				self.Text1.SaveFile(self.poth)
-
-			

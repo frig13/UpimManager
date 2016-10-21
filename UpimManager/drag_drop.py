@@ -7,7 +7,7 @@ Created on Fri Feb 14 16:14:33 2016
 """
 from wx import MessageDialog
 from wx import FileDropTarget
-
+# примерный класс...
 class FileDrop(FileDropTarget):
 	def __init__(self, window):
 		FileDropTarget.__init__(self)

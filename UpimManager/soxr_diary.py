@@ -7,6 +7,7 @@ import sys_inf
 import conf_db
 sys_inf.GetTxt()
 
+# Сохранение для UM
 class Soxr(wx.Panel):
 	def __init__(self, parent, x):
 		self.x = x

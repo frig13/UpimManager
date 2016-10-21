@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # наш rc.config
+
 def GetTxt():
 	import gettext
 	gettext.textdomain('upim')

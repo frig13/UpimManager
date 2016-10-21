@@ -8,6 +8,7 @@ import os
 import sys_inf
 from distutils.file_util import copy_file
 
+# простейший модуль, своего рода биос для UM, что бы этот не пал, если чего-то не станет по вине пользователя.
 DP = sys_inf.DATA_PATH
 LIST_PATH = [DP, DP + 'Data', DP + 'Other', DP + 'Pattern', DP + 'Text', sys_inf.CONF_PATH]
 

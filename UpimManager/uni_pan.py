@@ -14,6 +14,7 @@ import sys_inf
 import tx
 sys_inf.GetTxt()
 
+# универсальная панель для отображения структуры дневниковых записей - заметок
 class TabPanel(wx.Panel):
 	def __init__(self, parent, wop, pths, names):
 		wx.Panel.__init__(self, parent=parent)

@@ -1,15 +1,16 @@
-
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import sys, os
 import locale
 from distutils.file_util import copy_file
 import py_compile
+# Установка удаление программы. 
 
-if sys.version.split('.')[0] != '2':
+if sys.version.split('.')[0] != '2':# Если пайтон-3 - не установится!
 	print 'UpimManager requires Python version >= 2.7.5 < 3.x.x'
 	sys.exit(0)
-try:
+	
+try:# если нет или не та версия wx - не установится!
 	import wx
 	if wx.__version__ != '2.8.12.1':
 		print 'UpimManager requires the wxPython-2.8.12.1'
@@ -20,7 +21,11 @@ except:
 	sys.exit(0)
 
 LOC_PREFIX = '/usr/local/'	
-
+# если $1 = install, то создаёт соответствующую структуру папок и копирует туда файлы
+# если $1 = remove, соответственно, удаляет их.
+# если $1 = иное, ругается.
+# если нет $1, поясняет.
+# если скрипт запустить не под рутом, он завершится с ошибкой доступа, ничего не установив.
 try:
 	if sys.argv[1] == 'install':
 		list_li = ['/usr/local/lib', '/usr/local/share', '/usr/local/share/upim', '/usr/local/lib/python2.7', '/usr/local/lib/python2.7/dist-packages', '/usr/local/lib/python2.7/dist-packages/UpimManager']
@@ -120,12 +125,10 @@ try:
 			os.rmdir(LOC_PREFIX + 'share/upim')
 			print 'Removing ShareUpim dir \n'
 		
-		print "================================================\n Upim Manager removed successfull\n If you remove all files, to enter:\n$ rm -rf /home/$USER/.Upim \n$ rm -rf /home/$USER/.config/Upim\n$ rm /home/$USER/.config/autostart/cronpy.desktop\n$ rm /home/$USER/.config/autostart/gtktray.desktop\n================================================"
+		print "================================================\n Upim Manager removed successfull\n If you remove all files, enter:\n$ rm -rf /home/$USER/.Upim \n$ rm -rf /home/$USER/.config/Upim\n$ rm /home/$USER/.config/autostart/cronpy.desktop\n$ rm /home/$USER/.config/autostart/gtktray.desktop\n================================================"
 	else:
 		print "--------------\n Stupid enter!\n--------------"
 		sys.exit(0)
 except IndexError:
 	print "=======================================================================\n Enter: \"sudo python setup.py install\" or \"sudo python setup.py remove\"\n======================================================================="
 	sys.exit(0)
-	
-

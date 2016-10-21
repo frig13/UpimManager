@@ -16,7 +16,7 @@ from sys import argv
 import validate
 sys_inf.GetTxt()
 
-#практически теже функ., что и в менеджере, поэтому нет иного коментов
+#практически теже функ., что и в менеджере, поэтому нет много коментов
 class Upim_Writer(wx.Frame):
 	def __init__(self, patch=None):
 		self.patch = patch
@@ -41,31 +41,39 @@ class Upim_Writer(wx.Frame):
 		itm1 = wx.MenuItem(menu, -1, _('New File'))
 		itm1.SetBitmap(wx.Bitmap(f11))
 		menu.AppendItem(itm1)
+		
 		itm2 = wx.MenuItem(menu, -1, _('Open'))
 		itm2.SetBitmap(wx.Bitmap(f22))
 		menu.AppendItem(itm2)
 		menu.AppendSeparator()
+		
 		itm4 = wx.MenuItem(menu, -1, _('Save'))
 		itm4.SetBitmap(wx.Bitmap(f33))
 		menu.AppendItem(itm4)
+		
 		itm5 = wx.MenuItem(menu, -1, _('Save as'))
 		itm5.SetBitmap(wx.Bitmap(f44))
 		menu.AppendItem(itm5)
+		
 		itm58 = wx.MenuItem(menu, -1, _('Save as html'))
 		itm58.SetBitmap(wx.Bitmap(f58))
 		menu.AppendItem(itm58)
 		menu.AppendSeparator()
+		
 		itm57 = wx.MenuItem(menu, -1, _('Print'))
 		itm57.SetBitmap(wx.Bitmap(f57))
 		menu.AppendItem(itm57)
 		menu.AppendSeparator()
+		
 		itm6 = wx.MenuItem(menu, -1, _('Clear'))
 		itm6.SetBitmap(wx.Bitmap(f55))
 		menu.AppendItem(itm6)
 		menu.AppendSeparator()
+		
 		itm7 = wx.MenuItem(menu, -1, _('Exit'))
 		itm7.SetBitmap(wx.Bitmap(f66))
 		menu.AppendItem(itm7)
+		
 		self.Bind(wx.EVT_MENU, self.Onj1, itm1)
 		self.Bind(wx.EVT_MENU, self.Onj2, itm2)
 		self.Bind(wx.EVT_MENU, self.Savz, itm5)
@@ -75,6 +83,7 @@ class Upim_Writer(wx.Frame):
 		self.Bind(wx.EVT_MENU, self.Clears, itm6)
 		self.Bind(wx.EVT_MENU, self.OnCloses, itm7)
 		self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
+		
 		menuBar.Append(menu, _("File"))
 		menu3 = wx.Menu()
 		
@@ -95,43 +104,55 @@ class Upim_Writer(wx.Frame):
 		itm19 = wx.MenuItem(menu3, -1, _('Bold'))
 		itm19.SetBitmap(wx.Bitmap(ffj))
 		menu3.AppendItem(itm19)
+		
 		itm20 = wx.MenuItem(menu3, -1, _('Italic'))
 		itm20.SetBitmap(wx.Bitmap(ffna))
 		menu3.AppendItem(itm20)
+		
 		itm21 = wx.MenuItem(menu3, -1, _('Underline'))
 		itm21.SetBitmap(wx.Bitmap(ffpo))
 		menu3.AppendItem(itm21)
 		menu3.AppendSeparator()
+		
 		itm22 = wx.MenuItem(menu3, -1, _('Indent'))
 		itm22.SetBitmap(wx.Bitmap(par))
 		menu3.AppendItem(itm22)
+		
 		itm23 = wx.MenuItem(menu3, -1, _('Unindent'))
 		itm23.SetBitmap(wx.Bitmap(opar))
 		menu3.AppendItem(itm23)
 		menu3.AppendSeparator()
+		
 		itm12 = wx.MenuItem(menu3, -1, _('Left'))
 		itm12.SetBitmap(wx.Bitmap(ffg))
 		menu3.AppendItem(itm12)
+		
 		itm13 = wx.MenuItem(menu3, -1, _('Centre'))
 		itm13.SetBitmap(wx.Bitmap(ffh))
 		menu3.AppendItem(itm13)
+		
 		itm14 = wx.MenuItem(menu3, -1, _('Right'))
 		itm14.SetBitmap(wx.Bitmap(fff))
 		menu3.AppendItem(itm14)
 		menu3.AppendSeparator()
+		
 		itm15 = wx.MenuItem(menu3, -1, _('Write lines'))
 		itm15.SetBitmap(wx.Bitmap(ffl))
 		menu3.AppendItem(itm15)
+		
 		itm16 = wx.MenuItem(menu3, -1, _('Write image'))
 		itm16.SetBitmap(wx.Bitmap(ffk))
 		menu3.AppendItem(itm16)
+		
 		itm17 = wx.MenuItem(menu3, -1, _('Write link to file'))
 		itm17.SetBitmap(wx.Bitmap(ffs))
 		menu3.AppendItem(itm17)	
 		menu3.AppendSeparator()
+		
 		itm18 = wx.MenuItem(menu3, -1, _('Remember'))
 		itm18.SetBitmap(wx.Bitmap(ffn))
 		menu3.AppendItem(itm18)
+		
 		self.Bind(wx.EVT_MENU, self.To_Left, itm12)
 		self.Bind(wx.EVT_MENU, self.To_Center, itm13)
 		self.Bind(wx.EVT_MENU, self.To_Right, itm14)
@@ -159,6 +180,7 @@ class Upim_Writer(wx.Frame):
 		itm8.SetBitmap(wx.Bitmap(f77))
 		menu4.AppendItem(itm8)
 		self.Bind(wx.EVT_MENU, self.On8, itm8)
+		
 		itm9 = wx.MenuItem(menu4, -1, _('About'))
 		itm9.SetBitmap(wx.Bitmap(f88))
 		menu4.AppendItem(itm9)
@@ -166,12 +188,13 @@ class Upim_Writer(wx.Frame):
 		self.SetMenuBar(menuBar)
 
 		tb = self.CreateToolBar( wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT | wx.TB_TEXT)
+		
 		if conf_db.Dobd_class('toolbar').baz_vst() != 'Not':
 			tb.Show()
 		else:
 			tb.Hide()
-		opp = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH  + '11b.png'), _('Write time and date'))
 		
+		opp = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH  + '11b.png'), _('Write time and date'))
 		tb.AddSeparator()
 		podws = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'podw.png'), _('GoEnd'))
 		poups = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'poup.png'), _('GoHome'))
@@ -267,10 +290,7 @@ class Upim_Writer(wx.Frame):
 				break
 			else:
 				d2 = ''
-		if conf_db.Dobd_class('posfile').baz_vst() != 'Not':
-			self.win.LoadFile(conf_db.Dobd_class('posfile').baz_vst())
-		else:
-			self.win.WriteText(d2 + h2)	
+		self.win.WriteText(d2 + h2)	
 
 		
 		dt = drag_drop.FileDrop(self.win)
@@ -278,6 +298,7 @@ class Upim_Writer(wx.Frame):
 		
 		if self.patch is not None:
 			self.win.LoadFile(self.patch)
+			
 		try:
 			if argv[1]:
 				try:
@@ -324,11 +345,11 @@ class Upim_Writer(wx.Frame):
 		licence = open(lic, 'r').read()
 		info = wx.AboutDialogInfo()
 		info.SetName('Upim Writer')
-		info.SetVersion('1.0.1')
+		info.SetVersion('1.0.2')
 		info.SetDescription(description)
 		info.SetCopyright('(C) 2013 - 2016 Victor Frig')
 		info.SetLicence(licence)
-		info.AddDeveloper('Victor Frig')
+		info.AddDeveloper('Victor Frig aka Prohodimec')
 		wx.AboutBox(info)
 		
 	def URL2(self, event):
@@ -376,8 +397,14 @@ class Upim_Writer(wx.Frame):
 		self.pnn.Destroy()
 
 	def OnURLS(self, event):
-		os.system('xdg-open ' + '"' + event.GetString().encode('utf-8').decode('latin-1').encode('latin-1') + '"' + ' &')	
-
+		try:
+			if event.GetString().encode('utf-8').decode('latin-1').encode('latin-1').split('/')[6].split('.')[1] == 'ox':
+				self.win.LoadFile(event.GetString().encode('utf-8').decode('latin-1').encode('latin-1'))
+			else:
+				os.system('xdg-open ' + '"' + event.GetString().encode('utf-8').decode('latin-1').encode('latin-1') + '"' + ' &')
+		except IndexError:
+			os.system('xdg-open ' + '"' + event.GetString().encode('utf-8').decode('latin-1').encode('latin-1') + '"' + ' &')
+			
 	def To_Left(self, event):
 		self.win.ApplyAlignmentToSelection(text.TEXT_ALIGNMENT_LEFT) 
 		

@@ -33,7 +33,7 @@ class SimpleGrid(gridlib.Grid):
 		self.dt = wx.DateTime()
 		
 		self.lift = []
-		fo = sys_inf.DATA_PATH + 'Other/'
+		fo = sys_inf.DATA_PATH + 'Other/'# сканируем заметки для отображения в меню
 		for pap in os.listdir(fo):
 			filfo = fo + pap
 			if os.path.isdir(filfo):
@@ -134,7 +134,7 @@ class SimpleGrid(gridlib.Grid):
 						self.SetCellBackgroundColour(ad, id, conf_db.Dobd_class('cvetzam').baz_vst())
 						self.SetCellTextColour(ad, id, wx.RED)
 
-# функция совмещения двух циклов - поиск дней с заметками					
+# матрица совмещения двух циклов - поиск дней с заметками					
 	def Noisk(self):
 		for z in self.chis:
 			if str(z) == '01':
@@ -309,7 +309,7 @@ class SimpleGrid(gridlib.Grid):
 				chislo = 'ноя'
 			elif self.monts == 11:
 				chislo = 'дек'
-		elif sys_inf.Loc().split('_')[0] == 'en':
+		else:
 			if self.monts == 0:
 				chislo = 'Jan'
 			elif self.monts == 1:
@@ -373,7 +373,7 @@ class SimpleGrid(gridlib.Grid):
 					self.SetCellFont(ad, id, wx.Font(17, wx.SWISS, wx.NORMAL, wx.BOLD))
 					self.SetCellValue(ad, id, str(vk))
 				
-				
+# биндинг - открытие, удаление заметок				
 	def OP3(self, event):
 		for fol in os.listdir(self.ui):
 			if int(fol.split(':')[0]) == int(self.click.split('\n')[0]):

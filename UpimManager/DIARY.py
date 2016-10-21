@@ -38,7 +38,7 @@ class Upim_Manager(wx.Frame):
 		self.dis = sys_inf.Sizer()
 	
 		self.SetIcon(wx.Icon(sys_inf.ICON_PATH + 'upim.png', wx.BITMAP_TYPE_PNG))
-		
+	
 #меню и тулбар
 		menuBar = wx.MenuBar()
 		
@@ -58,35 +58,44 @@ class Upim_Manager(wx.Frame):
 		itm1 = wx.MenuItem(menu, -1, _('New File'))
 		itm1.SetBitmap(wx.Bitmap(f1))
 		menu.AppendItem(itm1)
+		
 		itm2 = wx.MenuItem(menu, -1, _('Open'))
 		itm2.SetBitmap(wx.Bitmap(f2))
 		menu.AppendItem(itm2)
 		menu.AppendSeparator()
+		
 		itm4 = wx.MenuItem(menu, -1, _('Save'))
 		itm4.SetBitmap(wx.Bitmap(f3))
 		menu.AppendItem(itm4)
+		
 		itm5 = wx.MenuItem(menu, -1, _('Save as'))
 		itm5.SetBitmap(wx.Bitmap(f4))
 		menu.AppendItem(itm5)
+		
 		itm88 = wx.MenuItem(menu, -1, _('Save as html'))
 		itm88.SetBitmap(wx.Bitmap(f88))
 		menu.AppendItem(itm88)
 		menu.AppendSeparator()
+		
 		itm38 = wx.MenuItem(menu, -1, _('Print'))
 		itm38.SetBitmap(wx.Bitmap(f38))
 		menu.AppendItem(itm38)
 		menu.AppendSeparator()
+		
 		itm34 = wx.MenuItem(menu, -1, _('Return'))
 		itm34.SetBitmap(wx.Bitmap(f34))
 		menu.AppendItem(itm34)
 		menu.AppendSeparator()
+		
 		itm6 = wx.MenuItem(menu, -1, _('Clear'))
 		itm6.SetBitmap(wx.Bitmap(f5))
 		menu.AppendItem(itm6)
 		menu.AppendSeparator()
+		
 		itm7 = wx.MenuItem(menu, -1, _('Exit'))
 		itm7.SetBitmap(wx.Bitmap(f6))
 		menu.AppendItem(itm7)
+		
 		self.Bind(wx.EVT_MENU, self.On1, itm1)
 		self.Bind(wx.EVT_MENU, self.On3, itm2)
 		self.Bind(wx.EVT_MENU, self.Print, itm38)
@@ -96,9 +105,11 @@ class Upim_Manager(wx.Frame):
 		self.Bind(wx.EVT_MENU, self.Clears, itm6)
 		self.Bind(wx.EVT_MENU, self.OnClose, itm7)
 		self.Bind(wx.EVT_MENU, self.Seg, itm34)
+		
 		menuBar.Append(menu, _("File"))
 
 		menu3 = wx.Menu()
+		
 		f77 = sys_inf.ICON_PATH + '11bs.png'
 		ffg = sys_inf.ICON_PATH + 'format-justify-left1.png'
 		ffh = sys_inf.ICON_PATH + 'format-justify-center1.png'
@@ -117,39 +128,50 @@ class Upim_Manager(wx.Frame):
 		itm191.SetBitmap(wx.Bitmap(f77))
 		menu3.AppendItem(itm191)
 		menu3.AppendSeparator()
+		
 		itm19 = wx.MenuItem(menu3, -1, _('Bold'))
 		itm19.SetBitmap(wx.Bitmap(ffj))
 		menu3.AppendItem(itm19)
+		
 		itm20 = wx.MenuItem(menu3, -1, _('Italic'))
 		itm20.SetBitmap(wx.Bitmap(ffna))
 		menu3.AppendItem(itm20)
+		
 		itm21 = wx.MenuItem(menu3, -1, _('Underline'))
 		itm21.SetBitmap(wx.Bitmap(ffpo))
 		menu3.AppendItem(itm21)
 		menu3.AppendSeparator()
+		
 		itm22 = wx.MenuItem(menu3, -1, _('Indent'))
 		itm22.SetBitmap(wx.Bitmap(par))
 		menu3.AppendItem(itm22)
+		
 		itm23 = wx.MenuItem(menu3, -1, _('Unindent'))
 		itm23.SetBitmap(wx.Bitmap(opar))
 		menu3.AppendItem(itm23)
 		menu3.AppendSeparator()
+		
 		itm12 = wx.MenuItem(menu3, -1, _('Left'))
 		itm12.SetBitmap(wx.Bitmap(ffg))
 		menu3.AppendItem(itm12)
+		
 		itm13 = wx.MenuItem(menu3, -1, _('Centre'))
 		itm13.SetBitmap(wx.Bitmap(ffh))
 		menu3.AppendItem(itm13)
+		
 		itm14 = wx.MenuItem(menu3, -1, _('Right'))
 		itm14.SetBitmap(wx.Bitmap(fff))
 		menu3.AppendItem(itm14)
 		menu3.AppendSeparator()
+		
 		itm15 = wx.MenuItem(menu3, -1, _('Write lines'))
 		itm15.SetBitmap(wx.Bitmap(ffl))
 		menu3.AppendItem(itm15)
+		
 		itm16 = wx.MenuItem(menu3, -1, _('Write image'))
 		itm16.SetBitmap(wx.Bitmap(ffk))
 		menu3.AppendItem(itm16)
+		
 		itm17 = wx.MenuItem(menu3, -1, _('Write link to file'))
 		itm17.SetBitmap(wx.Bitmap(ffs))
 		menu3.AppendItem(itm17)
@@ -194,6 +216,7 @@ class Upim_Manager(wx.Frame):
 		menu4.AppendItem(itp)
 		self.Bind(wx.EVT_MENU, self.OnRed3, itp)		
 		menu4.AppendSeparator()
+		
 		itmN = wx.MenuItem(menu4, -1, _("Settings"))
 		kart = sys_inf.ICON_PATH + 'edit.png'
 		itmN.SetBitmap(wx.Bitmap(kart))
@@ -201,10 +224,12 @@ class Upim_Manager(wx.Frame):
 		self.Bind(wx.EVT_MENU, self.OnN, itmN)
 		menu5 = wx.Menu()
 		menuBar.Append(menu5, _("Tutorial"))
+		
 		itm8 = wx.MenuItem(menu5, -1, _('Open tutorial'))
 		itm8.SetBitmap(wx.Bitmap(f7))
 		menu5.AppendItem(itm8)
 		self.Bind(wx.EVT_MENU, self.On8, itm8)
+		
 		itm9 = wx.MenuItem(menu5, -1, _('About'))
 		itm9.SetBitmap(wx.Bitmap(f8))
 		menu5.AppendItem(itm9)
@@ -231,6 +256,7 @@ class Upim_Manager(wx.Frame):
 		on7 = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + '6b.png'), _('Choice colour'))
 		self.tb.AddSeparator()
 		on8 = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + '7b.png'), _('Clear'))
+		self.tb.AddSeparator()
 		on9 = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + '8b.png'), _('Save as'))
 		on10 = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + '9b.png'), _('Save real'))
 		self.tb.AddSeparator()
@@ -252,21 +278,26 @@ class Upim_Manager(wx.Frame):
 		self.Bind(wx.EVT_TOOL, self.PosUp, poups)
 		
 		self.tb.AddSeparator()
+		
 		li = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'format-justify-left.png'), _('Left'))
 		ct = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'format-justify-center.png'), _('Centre'))
 		pr = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'format-justify-right.png'), _('Right'))
 
 		self.tb.AddSeparator()
+		
 		goods = int(time.strftime('%G'))
 		montd = [_('Jan'), _('Feb'), _('Mar'), _('Apr'), _('May'), _('Jun'), _('Jul'), _('Aug'), _('Sep'), _('Oct'), _('Nov'), _('Dec')]
 		self.ch = wx.ComboBox(self.tb, -1, value = '', choices=montd, size=(100, 30), style=wx.CB_DROPDOWN)
 		
 		self.ch2 = wx.SpinCtrl(self.tb, value=str(goods), size=(60, 30), min=1970, max=2100)
+		
 		self.Bind(wx.EVT_TOOL, self.To_Left, li)
 		self.Bind(wx.EVT_TOOL, self.To_Center, ct)
 		self.Bind(wx.EVT_TOOL, self.To_Right, pr)
+		
 		self.tb.AddControl(self.ch)
 		self.tb.AddControl(self.ch2)
+		
 		self.tb.AddSeparator()
 		
 		dont = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'b.png'), _('Go'))
@@ -275,15 +306,18 @@ class Upim_Manager(wx.Frame):
 		Seg = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'b2.png'), _('Revert'))
 		self.Bind(wx.EVT_TOOL, self.Seg, Seg)
 		self.tb.AddSeparator()
+		
 		ntl = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 's.png'), _('Remember'))
 		self.Bind(wx.EVT_TOOL, self.PanNaps, ntl)
 		self.tb.AddSeparator()
+		
 		ont = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'p.png'), _('Tutorial(ru)'))
 		self.Bind(wx.EVT_TOOL, self.On8, ont)
 
 		tnop = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'nas.png'), _('Settings'))
 		self.Bind(wx.EVT_TOOL, self.OnN, tnop)
 		self.tb.AddSeparator()
+		
 		on14 = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'e.png'), _('Exit'))
 		self.Bind(wx.EVT_TOOL, self.OnCloseWindow, on14)
 		
@@ -297,10 +331,13 @@ class Upim_Manager(wx.Frame):
 		self.timer = wx.Timer(self)
 		self.Bind(wx.EVT_TIMER, self.update, self.timer)
 		self.timer.Start(1000)
+		
 		# ++++++++++++++++++++++
 		self.Wins()
 		# ++++++++++++++++++++++
+		
 		self.sb = wx.StatusBar(self, -1)
+		self.sb.SetBackgroundColour(conf_db.Dobd_class('colorviz').baz_vst())
 		self.sb.SetFieldsCount(3)
 		self.sb.SetStatusText(self.RetDay(), 2)
 		self.sb.SetStatusText(f, 1)
@@ -308,6 +345,7 @@ class Upim_Manager(wx.Frame):
 		# перетаскивать файлы
 		dt = drag_drop.FileDrop(self.win)
 		self.win.SetDropTarget(dt)
+		
 		# ++++++++++++++++++++++
 		self.Pan_One()
 		self.Pno(i, ds)		
@@ -317,6 +355,7 @@ class Upim_Manager(wx.Frame):
 # часики в статусбаре
 	def ChasY(self):
 		self.sb.SetStatusText(time.strftime('%H:%M:%S'), 0)
+		
 	def update(self, event):
 		self.ChasY()
 
@@ -366,7 +405,7 @@ class Upim_Manager(wx.Frame):
 		self.notebook3 = wx.Notebook(self.panel3)
 		tabCal =  Caldar.SimpleGrid(self.notebook3, c, d, self.win, self.dis[4], self.dis[5], 'Diary')
 		self.notebook3.AddPage(tabCal, _("Calendar"))
-		if self.dis[1] > 600:
+		if self.dis[1] > 600:# никак не укладывается в меньше...
 			tabCald =  Sheet.NedSheet(self.notebook3)
 			self.notebook3.AddPage(tabCald, _("Real Week"))
 		tabDay = day.Seg_Day(self.notebook3)
@@ -379,6 +418,7 @@ class Upim_Manager(wx.Frame):
 # открытие, сохранение...	
 	def On1(self, event):
 		panel_richtext.Upim_Writer().Show()
+		
 	# позиция	
 	def PosDw(self, event):
 		self.win.ShowPosition(len(self.win.GetValue().encode('utf-8').decode('latin-1').encode('latin-1')))
@@ -479,11 +519,11 @@ advanced search capabilities and more.
 		info = wx.AboutDialogInfo()
 		info.SetName('Upim Manager')
 		info.SetIcon(wx.Icon(sys_inf.ICON_PATH + 'upim.png', wx.BITMAP_TYPE_PNG))
-		info.SetVersion('1.0.1')
+		info.SetVersion('1.0.2')
 		info.SetDescription(description)
 		info.SetCopyright('(C) 2013 - 2016 Victor Frig')
 		info.SetLicence(licence)
-		info.AddDeveloper('Victor Frig')
+		info.AddDeveloper('Victor Frig aka Prohodimec')
 		wx.AboutBox(info)
 
 
@@ -677,7 +717,13 @@ advanced search capabilities and more.
 			
 # открыть ссылку на файл, url - святым копипастием			
 	def OnURL(self, event):
-		os.system('xdg-open ' + '"' + event.GetString().encode('utf-8').decode('latin-1').encode('latin-1') + '"' + ' &')
+		try:
+			if event.GetString().encode('utf-8').decode('latin-1').encode('latin-1').split('/')[6].split('.')[1] == 'ox':
+				self.win.LoadFile(event.GetString().encode('utf-8').decode('latin-1').encode('latin-1'))
+			else:
+				os.system('xdg-open ' + '"' + event.GetString().encode('utf-8').decode('latin-1').encode('latin-1') + '"' + ' &')
+		except IndexError:
+			os.system('xdg-open ' + '"' + event.GetString().encode('utf-8').decode('latin-1').encode('latin-1') + '"' + ' &')	
 # мелочи
 	def Clears(self, event):
 		self.win.Clear()
@@ -751,7 +797,7 @@ advanced search capabilities and more.
 						dlgs2.ShowModal()
 					else:	
 						self.win.SaveFile(savep)
-						self.Osh(savep.encode('utf-8').decode('latin-1').encode('latin-1'))							
+						self.Os(savep.encode('utf-8').decode('latin-1').encode('latin-1'))							
 				except IndexError:
 					self.win.SaveFile(savep)
 		dlg.Destroy()
@@ -790,19 +836,20 @@ advanced search capabilities and more.
 		g = self.ch2.GetValue()
 		self.Pno(m, g)
 		self.Sz()
-	
-
+				
 # ВАЖНАЯ ФУНКЦИЯ  - ИНДЕКСИРУЕТ ЗАМЕТКИ В BD-shelve		
 	def Os(self, pth):
 		p = pth.split('/')[6]
 		on = self.win.GetValue().encode('utf-8').decode('latin-1').encode('latin-1')
 		conf_db.dobdb(p, on)
+
 #СЕГОДНЯ!		
 	def Seg(self, event):
 		m = int(time.strftime('%m')) - 1
 		g = int(time.strftime('%G'))
 		self.Pno(m, g)
 		self.Sz()
+		
 #ГЛАВНЫЙ САЙЗЕР
 	def Sz(self):
 		gbox = wx.BoxSizer(wx.HORIZONTAL)	

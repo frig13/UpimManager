@@ -14,6 +14,7 @@ import validate
 from sys import argv
 import wx.lib.buttons as buttons
 sys_inf.GetTxt()
+
 # упаковка - календарик
 class CalenFrame(wx.Frame):
 	def __init__(self, parent):	
@@ -37,35 +38,44 @@ class CalenFrame(wx.Frame):
 		i = sys_inf.ICON_PATH + 's.png'
 		self.SetIcon(wx.Icon(i, wx.BITMAP_TYPE_PNG))
 		self.n = wx.Panel(self, -1, size=(320,240))
+		
 		figf = sys_inf.ICON_PATH + 'fon.png'
 		imj = wx.Image(figf, wx.BITMAP_TYPE_ANY)
 		wx.StaticBitmap(self.n, 104, wx.BitmapFromImage(imj), pos=(0,0))
 		font_button = wx.Font(8, wx.ROMAN, wx.NORMAL, wx.BOLD, True)
+		
 		bu = buttons.GenButton(self.n, -1, "+G", size=(47,23), pos=(287, 32))
 		bu.SetBackgroundColour('#1f44df')
 		bu.Bind(wx.EVT_BUTTON, self.Tuda, bu)
 		bu.SetFont(font_button)
+		
 		but = buttons.GenButton(self.n, -1, "-G",size=(43,23), pos=(0, 32))
 		but.Bind(wx.EVT_BUTTON, self.Suda, but)
 		but.SetBackgroundColour('#1f44df')
 		but.SetFont(font_button)
+		
 		seg = buttons.GenButton(self.n, -1, _("Act."), size=(67,23), pos=(44, 32))
 		seg.Bind(wx.EVT_BUTTON, self.Seg, seg) 
 		seg.SetBackgroundColour('#816B85')
 		seg.SetFont(font_button)
+		
 		snap = buttons.GenButton(self.n, -1, _("Rem."), size=(78,23), pos=(111, 32))
 		snap.Bind(wx.EVT_BUTTON, self.Napom, snap) 
 		snap.SetBackgroundColour('#740B19')
 		snap.SetFont(font_button)
+		
 		butm = buttons.GenButton(self.n, -1, "+M", size=(47,23), pos=(237, 32))
 		butm.Bind(wx.EVT_BUTTON, self.Mtuda, butm)
 		butm.SetBackgroundColour('#6B6838')
 		butm.SetFont(font_button)
+		
 		buts = buttons.GenButton(self.n, -1, "-M", size=(47,23), pos=(189, 32))
 		buts.Bind(wx.EVT_BUTTON, self.Msuda, buts)
 		buts.SetFont(font_button)
 		buts.SetBackgroundColour('#6B6838')
+		
 		font = wx.Font(14, wx.ROMAN, wx.NORMAL, wx.BOLD, True)
+		
 		self.Bind(wx.EVT_MOUSE_EVENTS, self.OnMouseEvent)
 		self.Troon()
 		self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
@@ -76,16 +86,20 @@ class CalenFrame(wx.Frame):
 		self.goodtxt = wx.StaticText(self.n, -1, time.strftime('%G'), pos=(180,5), size=(80, 30))
 		self.goodtxt.SetForegroundColour('#6BFFE5')
 		self.goodtxt.SetFont(font)
+	
 		if sys_inf.Loc() == 'ru_RU':
 			g = 'года'
-		elif sys_inf.Loc() == 'en_US':
+		else:
 			g = 'year'
+
 		self.gtxt = wx.StaticText(self.n, -1, g, pos=(240,5), size=(80, 40))
 		self.gtxt.SetForegroundColour('lightgray')
 		self.gtxt.SetFont(font)
+
 		self.modtxt = wx.StaticText(self.n, -1, self.Ruys(), pos=(70,5), size=(80, 40))
 		self.modtxt.SetForegroundColour('gold')
 		self.modtxt.SetFont(font)
+
 		self.chistxt = wx.StaticText(self.n, -1, sys_inf.Once(), pos=(35,5), size=(80, 30))
 		self.chistxt.SetForegroundColour('lightgray')
 		self.chistxt.SetFont(font)
@@ -100,20 +114,16 @@ class CalenFrame(wx.Frame):
 	def Tuda(self, event):
 		self.Pr(0)
 		
-		
 	def Suda(self, event):
-		self.Pr(1)
-		
+		self.Pr(1)		
 		
 	def Mtuda(self, event):
 		self.Prm(0)
-		self.Room()
-		
+		self.Room()		
 		
 	def Msuda(self, event):
 		self.Prm(1)
-		self.Room()
-		
+		self.Room()		
 		
 	def Rooyt(self):
 		o = str(self.good_f)
@@ -165,9 +175,9 @@ class CalenFrame(wx.Frame):
 					if self.me < 1:
 						self.me = 12
 			except AttributeError:
-				self.me = int(time.strftime('%m')) - 1 # если проблемы, смотри здесь
+				self.me = int(time.strftime('%m')) - 1 
 		if om == 2:
-			self.me = int(time.strftime('%m')) # если проблемы, смотри здесь
+			self.me = int(time.strftime('%m')) 
 		self.Finals_M(self.me)	
 
 # посредники года-месяцы		
@@ -185,6 +195,7 @@ class CalenFrame(wx.Frame):
 		self.mes_f = mmes
 		self.Ruys()
 		self.Troon()
+		
 # обобщающая функция		
 	def Troon(self):
 		try:
@@ -215,6 +226,7 @@ class CalenFrame(wx.Frame):
 		self.SetSizer(hbox)
 		self.Fit()
 		self.Layout()
+		
 # динамичная функция-индикатор месяца по счётчику
 	def Ruys(self):
 		try:
@@ -253,9 +265,11 @@ class CalenFrame(wx.Frame):
 	def OnCloseWindow(self, event):
 		os.remove('/tmp/look')
 		self.Destroy()
+		
 	def OnCloseWin(self):
 		os.remove('/tmp/look')
 		self.Destroy()
+		
 if os.path.exists('/tmp/look'):
 	pass
 else:
