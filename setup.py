@@ -21,11 +21,13 @@ except:
 	sys.exit(0)
 
 LOC_PREFIX = '/usr/local/'	
+
 # если $1 = install, то создаёт соответствующую структуру папок и копирует туда файлы
 # если $1 = remove, соответственно, удаляет их.
 # если $1 = иное, ругается.
 # если нет $1, поясняет.
 # если скрипт запустить не под рутом, он завершится с ошибкой доступа, ничего не установив.
+
 try:
 	if sys.argv[1] == 'install':
 		list_li = ['/usr/local/lib', '/usr/local/share', '/usr/local/share/upim', '/usr/local/lib/python2.7', '/usr/local/lib/python2.7/dist-packages', '/usr/local/lib/python2.7/dist-packages/UpimManager']
@@ -130,5 +132,5 @@ try:
 		print "--------------\n Stupid enter!\n--------------"
 		sys.exit(0)
 except IndexError:
-	print "=======================================================================\n Enter: \"sudo python setup.py install\" or \"sudo python setup.py remove\"\n======================================================================="
+	print "=======================================================================\n Enter: \"sudo python setup.py install\" or \"sudo python setup.py remove\"\n\n If update: \n\"sudo python setup.py remove && sudo python setup.py install\"\n ======================================================================="
 	sys.exit(0)

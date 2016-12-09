@@ -84,4 +84,9 @@ def Listrem(fils):
 		if fils not in nedlist:
 			nedlist.append(fils)
 	elif len(nedlist) == 0:
-		nedlist.append(fils)		
+		nedlist.append(fils)	
+
+dlist = []
+def Lists(pth):
+	#if pth not in dlist:
+	dlist.append(pth)		

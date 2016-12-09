@@ -16,12 +16,14 @@ from sys import argv
 import validate
 sys_inf.GetTxt()
 
-#практически теже функ., что и в менеджере, поэтому нет много коментов
+#практически те же функ., что и в менеджере, поэтому нет иного коментов
+
 class Upim_Writer(wx.Frame):
 	def __init__(self, patch=None):
-		self.patch = patch
+		self.patch = patch# путь к файлу, чтобы запускать из bash: $1, для того и ссылка
 		self.disp = sys_inf.Sizer()
 		wx.Frame.__init__(self, None, title="Upim Writer", size=(self.disp[0] - 20, self.disp[1] - 200),  style=wx.DEFAULT_FRAME_STYLE)
+		
 		f = sys_inf.ICON_PATH  + 'up.png'
 		self.SetIcon(wx.Icon(f, wx.BITMAP_TYPE_PNG))
 		
@@ -166,6 +168,43 @@ class Upim_Writer(wx.Frame):
 		self.Bind(wx.EVT_MENU, self.Lines, itm22)
 		self.Bind(wx.EVT_MENU, self.NewsLines, itm23)
 		
+		menu7= wx.Menu()
+		menuBar.Append(menu7, _("Notes"))
+		
+		i1 = sys_inf.ICON_PATH + 'sear.png'
+		itnd =  wx.MenuItem(menu7, -1, _('My diary'))
+		itnd.SetBitmap(wx.Bitmap(i1))
+		menu7.AppendItem(itnd)
+		self.Bind(wx.EVT_MENU, self.OnDiary, itnd)
+		
+		i2 = sys_inf.ICON_PATH + 'cut4.png'
+		itno =  wx.MenuItem(menu7, -1, _('My notes'))
+		itno.SetBitmap(wx.Bitmap(i2))
+		menu7.AppendItem(itno)
+		self.Bind(wx.EVT_MENU, self.OnOther, itno)
+		
+		# листы для меню заметок
+		self.LIST = []
+		foo = sys_inf.DATA_PATH + 'Other/'
+		for papo in os.listdir(foo):
+			fifo = foo + papo
+			if os.path.isdir(fifo):
+				for fapo in os.listdir(fifo):
+					self.LIST.append(fapo)
+		self.LIST.sort()
+		
+		
+		self.LIST2 = []
+		fo = sys_inf.DATA_PATH + 'Data/'
+		for ppo in os.listdir(fo):
+			ffo = fo + ppo
+			if os.path.isdir(ffo):
+				for fap in os.listdir(ffo):
+					self.LIST2.append(fap)
+		self.LIST2.sort()
+		
+		
+		
 		menu5 = wx.Menu()
 		fns = sys_inf.ICON_PATH  + 'nas1.png'
 		menuBar.Append(menu5, _("Settings"))
@@ -195,26 +234,43 @@ class Upim_Writer(wx.Frame):
 			tb.Hide()
 		
 		opp = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH  + '11b.png'), _('Write time and date'))
+		
 		tb.AddSeparator()
+		tf = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'bl2.png'), _('Return'))
+		
 		podws = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'podw.png'), _('GoEnd'))
+		
 		poups = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'poup.png'), _('GoHome'))
+		
+		ta = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'bl1.png'), _('Go'))
 		tb.AddSeparator()
+		
 		bomp = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH  + '4b.png'), _('Write image'))
 		font = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH  + '5b.png'), _('Choice font'))
+		
 		col = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH  + '6b.png'), _('Choice colour text'))
 		tb.AddSeparator()
+		
 		save = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH  + '12b.png'), _('Save to calendar'))
+		
 		savas = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH  + '9b.png'), _('Save real'))
+		
 		savz = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH  + '8b.png'), _('Save to notes'))
 		tb.AddSeparator()
+		
 		li = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'format-justify-left.png'), _('Left'))
+		
 		ct = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'format-justify-center.png'), _('Centre'))
+		
 		pr = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'format-justify-right.png'), _('Right'))
 
 		tb.AddSeparator()
+		
 		tyd = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH  + '14b.png'), _('Indent'))
+		
 		sud = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH  + '15b.png'), _('Unindent'))
 		tb.AddSeparator()
+		
 		bol = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH  + 'format-text-bold.png'), _('Bold'))
 		itl = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH  + 'format-text-italic.png'), _('Italic'))
 		poc = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'format-text-underline.png'), _('Underline'))
@@ -222,18 +278,26 @@ class Upim_Writer(wx.Frame):
 		
 		lin = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH  + '16.png'),_('Write lines') )
 		tb.AddSeparator()
+		
 		clean = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH  + '7b.png'), _('Clear'))
 		tb.AddSeparator()
+		
 		link = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH  + 'a.png'), _('Write link to file'))
+		
 		nap = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH  + 's.png'), _('Remember'))
+		
 		nopt = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH  + 'nas.png'), _('Settings'))
 		self.Bind(wx.EVT_TOOL, self.Nas, nopt)
 		tb.AddSeparator()
+		
 		sp = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH  + 'p.png'), _('Tutorial(ru)'))
 		
 		ex = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH  + 'ex.png'), _('Exit'))
 		tb.Realize()
 
+
+		self.Bind(wx.EVT_TOOL, self.Tf, tf)
+		self.Bind(wx.EVT_TOOL, self.Ta, ta)
 		self.Bind(wx.EVT_TOOL, self.OnFileOpen, opp)
 		self.Bind(wx.EVT_TOOL, self.OnImageOpen, bomp)
 		self.Bind(wx.EVT_TOOL, self.OnFont, font) 
@@ -262,8 +326,10 @@ class Upim_Writer(wx.Frame):
 		self.win.SetBackgroundColour(conf_db.Dobd_class('cvetwrit').baz_vst())
 		self.win.Bind(wx.EVT_TEXT_URL, self.OnURLS)
 		wx.CallAfter(self.win.SetFocus)
+		
 		font2 = wx.Font(conf_db.Dobd_class('fontrazwrit').baz_vst(), wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD, False, conf_db.Dobd_class('fontwrit').baz_vst())
 		self.win.SetFont(font2)
+		
 		self.AddRTCHandlers()
 		self.win.BeginParagraphSpacing(0, 20) #''''
 		
@@ -313,8 +379,56 @@ class Upim_Writer(wx.Frame):
 		self.win.ShowPosition(len(self.win.GetValue().encode('utf-8').decode('latin-1').encode('latin-1')))
 		
 	def PosUp(self, event):
-		self.win.ShowPosition(2)	
+		self.win.ShowPosition(2)
 		
+	def OnDiary(self, event):
+		self.submenus2 = wx.Menu()
+		fs2 = sys_inf.ICON_PATH + 'sear1.png'
+		for litas in self.LIST2:			
+			itd = wx.MenuItem(self.submenus2, -1, litas.split('.')[0])		
+			itd.SetBitmap(wx.Bitmap(fs2))
+			self.submenus2.AppendItem(itd)
+			self.submenus2.Bind(wx.EVT_MENU, self.Ondiary, itd)	
+		self.PopupMenu(self.submenus2)
+	
+	def OnOther(self, event):
+		self.submenus = wx.Menu()
+		fs = sys_inf.ICON_PATH + 'ev.png'
+		for lita in self.LIST:
+			itx = wx.MenuItem(self.submenus, -1, lita.split('.')[0])		
+			itx.SetBitmap(wx.Bitmap(fs))
+			self.submenus.AppendItem(itx)
+			self.submenus.Bind(wx.EVT_MENU, self.Onotes, itx)	
+		self.PopupMenu(self.submenus)
+		
+	def Onotes(self, event):
+		del conf_db.dlist[:]
+		conf_db.Lists(self.win.GetFilename())
+		items = self.submenus.FindItemById(event.GetId())
+		itemst = items.GetText().encode('utf-8').decode('latin-1').encode('latin-1') + '.ox'
+		foms = sys_inf.DATA_PATH + 'Other/'
+		for fotst in os.listdir(foms):
+			patcj = foms + fotst
+			if os.path.isdir(patcj):
+				for futas in os.listdir(patcj):
+					if futas == itemst:
+						self.win.LoadFile(patcj + '/' + futas)	
+						conf_db.Lists(self.win.GetFilename())
+	
+	def Ondiary(self, event):
+		del conf_db.dlist[:]
+		conf_db.Lists(self.win.GetFilename())
+		ite = self.submenus2.FindItemById(event.GetId())
+		item = ite.GetText().encode('utf-8').decode('latin-1').encode('latin-1') + '.ox'
+		fms = sys_inf.DATA_PATH + 'Data/'
+		for ftst in os.listdir(fms):
+			patch = fms + ftst
+			if os.path.isdir(patch):
+				for ftas in os.listdir(patch):
+					if ftas == item:
+						self.win.LoadFile(patch + '/' + ftas)	
+						conf_db.Lists(self.win.GetFilename())
+						
 	def Onj1(self, event):
 		os.system('python ' + sys_inf.UPIM_PATH + 'panel_richtext.py &')	
 		
@@ -339,15 +453,15 @@ class Upim_Writer(wx.Frame):
 			self.win.WriteText('Not tutorial to ' + sys_inf.Loc().split('_')[1] + ' language! :-(')
 	
 	def On9(self, event):	
-		description = """Upim Writer is an advanced powerful richtext editor, viewer.
+		description = """Upim Writer is an advanced powerful richtext editor, viewer for Linux.
 """
 		lic = '/usr/local/share/upim/LICENSE'
 		licence = open(lic, 'r').read()
 		info = wx.AboutDialogInfo()
 		info.SetName('Upim Writer')
-		info.SetVersion('1.0.2')
+		info.SetVersion('1.0.3')
 		info.SetDescription(description)
-		info.SetCopyright('(C) 2013 - 2016 Victor Frig')
+		info.SetCopyright('(C) 2013 - 2017 Victor Frig')
 		info.SetLicence(licence)
 		info.AddDeveloper('Victor Frig aka Prohodimec')
 		wx.AboutBox(info)
@@ -390,21 +504,39 @@ class Upim_Writer(wx.Frame):
 		self.pnn.Destroy()
 
 	def PanNap(self, event):
-		os.system('python '+ sys_inf.UPIM_PATH + 'soxr_nap.py &')
+		os.system('python '+ sys_inf.UPIM_PATH + 'soxr_nap.py &')	
 	
+	def Tf(self, event):
+		i = 1
+		f = len(conf_db.dlist)
+		for a in range(f):
+			self.topnit = f-i
+			self.win.LoadFile(conf_db.dlist[f-i])
+			i += 1
 	
+	def Ta(self, event):
+		i = 1
+		f = len(conf_db.dlist)
+		for a in range(f):
+			self.win.LoadFile(conf_db.dlist[self.topnit+i])
+			i += 1
+
 	def ExS(self, event):
 		self.pnn.Destroy()
 
 	def OnURLS(self, event):
 		try:
 			if event.GetString().encode('utf-8').decode('latin-1').encode('latin-1').split('/')[6].split('.')[1] == 'ox':
+				del conf_db.dlist[:]
+				conf_db.Lists(self.win.GetFilename())
 				self.win.LoadFile(event.GetString().encode('utf-8').decode('latin-1').encode('latin-1'))
+				conf_db.Lists(self.win.GetFilename())
 			else:
 				os.system('xdg-open ' + '"' + event.GetString().encode('utf-8').decode('latin-1').encode('latin-1') + '"' + ' &')
 		except IndexError:
 			os.system('xdg-open ' + '"' + event.GetString().encode('utf-8').decode('latin-1').encode('latin-1') + '"' + ' &')
-			
+		
+
 	def To_Left(self, event):
 		self.win.ApplyAlignmentToSelection(text.TEXT_ALIGNMENT_LEFT) 
 		
@@ -588,7 +720,7 @@ class Upim_Writer(wx.Frame):
 		once = self.win.GetValue().encode('utf-8').decode('latin-1').encode('latin-1')
 		conf_db.dobdb(pt, once)
 	
-			
+					
 if __name__ == '__main__':		
 	app = wx.App()
 	Upim_Writer().Show()

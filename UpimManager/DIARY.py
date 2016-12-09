@@ -22,7 +22,6 @@ import day
 import validate
 sys_inf.GetTxt()
 
-
 class Upim_Manager(wx.Frame):
 	def __init__(self, parent, id=-1, title='Upim Manager', pos=wx.DefaultPosition, style=wx.DEFAULT_FRAME_STYLE):
 		wx.Frame.__init__(self, parent, id, title, pos)
@@ -35,12 +34,12 @@ class Upim_Manager(wx.Frame):
 
 		self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)# не даём выйти без сохранения
 
-		self.dis = sys_inf.Sizer()
+		self.dis = sys_inf.Sizer()# сайзер, по нелепости править sys_inf
 	
 		self.SetIcon(wx.Icon(sys_inf.ICON_PATH + 'upim.png', wx.BITMAP_TYPE_PNG))
 	
 #меню и тулбар
-		menuBar = wx.MenuBar()
+		menuBar = wx.MenuBar()#менюбар
 		
 		f1 = sys_inf.ICON_PATH + '1.png'
 		f2 = sys_inf.ICON_PATH + '2.png'
@@ -90,6 +89,7 @@ class Upim_Manager(wx.Frame):
 		itm6 = wx.MenuItem(menu, -1, _('Clear'))
 		itm6.SetBitmap(wx.Bitmap(f5))
 		menu.AppendItem(itm6)
+
 		menu.AppendSeparator()
 		
 		itm7 = wx.MenuItem(menu, -1, _('Exit'))
@@ -247,28 +247,37 @@ class Upim_Manager(wx.Frame):
 			self.tb.Hide()
 		
 		Rec = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'obn.png'), _('Update'))
+		Filot = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'fileot.png'), _('Open'))
 		self.tb.AddSeparator()
+		
 		podws = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'podw.png'), _('GoEnd'))
+		
 		poups = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'poup.png'), _('GoHome'))
 		self.tb.AddSeparator()
+		
 		on5 = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + '4b.png'), _('Write image'))
+		
 		on6 = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + '5b.png'), _('Choice font'))
+		
 		on7 = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + '6b.png'), _('Choice colour'))
 		self.tb.AddSeparator()
-		on8 = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + '7b.png'), _('Clear'))
-		self.tb.AddSeparator()
+		
 		on9 = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + '8b.png'), _('Save as'))
+		
 		on10 = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + '9b.png'), _('Save real'))
 		self.tb.AddSeparator()
+		
 		on11 = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'format-text-bold.png'), _('Bold'))
+		
 		on12 = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'format-text-italic.png'), _('Italic'))
+		
 		on13 = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'format-text-underline.png'), _('Underline'))
 		
 		self.Bind(wx.EVT_TOOL, self.Seg, Rec)
+		self.Bind(wx.EVT_TOOL, self.Fileot, Filot)
 		self.Bind(wx.EVT_TOOL, self.OnImageOpen, on5)
 		self.Bind(wx.EVT_TOOL, self.OnFont, on6)
 		self.Bind(wx.EVT_TOOL, self.OnColour, on7)
-		self.Bind(wx.EVT_TOOL, self.Clears, on8)
 		self.Bind(wx.EVT_TOOL, self.OnFileSaveAs, on9)
 		self.Bind(wx.EVT_TOOL, self.FileSave, on10)
 		self.Bind(wx.EVT_TOOL, self.Bold, on11)
@@ -277,35 +286,48 @@ class Upim_Manager(wx.Frame):
 		self.Bind(wx.EVT_TOOL, self.PosDw, podws)
 		self.Bind(wx.EVT_TOOL, self.PosUp, poups)
 		
+		
 		self.tb.AddSeparator()
+		
 		
 		li = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'format-justify-left.png'), _('Left'))
 		ct = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'format-justify-center.png'), _('Centre'))
+		
 		pr = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'format-justify-right.png'), _('Right'))
 
 		self.tb.AddSeparator()
 		
-		goods = int(time.strftime('%G'))
-		montd = [_('Jan'), _('Feb'), _('Mar'), _('Apr'), _('May'), _('Jun'), _('Jul'), _('Aug'), _('Sep'), _('Oct'), _('Nov'), _('Dec')]
-		self.ch = wx.ComboBox(self.tb, -1, value = '', choices=montd, size=(100, 30), style=wx.CB_DROPDOWN)
+		on8 = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + '7b.png'), _('Clear'))
+		self.Bind(wx.EVT_TOOL, self.Clears, on8)
+		self.tb.AddSeparator()
 		
-		self.ch2 = wx.SpinCtrl(self.tb, value=str(goods), size=(60, 30), min=1970, max=2100)
+		goods = int(time.strftime('%G'))
+		
+		montd = [_('Jan'), _('Feb'), _('Mar'), _('Apr'), _('May'), _('Jun'), _('Jul'), _('Aug'), _('Sep'), _('Oct'), _('Nov'), _('Dec')]
+		self.ch = wx.ComboBox(self.tb, -1, value = '', choices=montd, size=(100, 22), style=wx.CB_DROPDOWN)
+		
+		self.ch2 = wx.SpinCtrl(self.tb, value=str(goods), size=(60, 22), min=1970, max=2100)
 		
 		self.Bind(wx.EVT_TOOL, self.To_Left, li)
 		self.Bind(wx.EVT_TOOL, self.To_Center, ct)
 		self.Bind(wx.EVT_TOOL, self.To_Right, pr)
 		
 		self.tb.AddControl(self.ch)
+
 		self.tb.AddControl(self.ch2)
 		
 		self.tb.AddSeparator()
 		
 		dont = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'b.png'), _('Go'))
 		self.Bind(wx.EVT_TOOL, self.Vub, dont)
-		self.tb.AddSeparator()
+		
 		Seg = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'b2.png'), _('Revert'))
 		self.Bind(wx.EVT_TOOL, self.Seg, Seg)
 		self.tb.AddSeparator()
+		
+		lin2 = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH  + '16.png'),_('Write lines') )
+		
+		link2 = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH  + 'a.png'), _('Write link to file'))
 		
 		ntl = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 's.png'), _('Remember'))
 		self.Bind(wx.EVT_TOOL, self.PanNaps, ntl)
@@ -317,6 +339,8 @@ class Upim_Manager(wx.Frame):
 		tnop = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'nas.png'), _('Settings'))
 		self.Bind(wx.EVT_TOOL, self.OnN, tnop)
 		self.tb.AddSeparator()
+		self.Bind(wx.EVT_TOOL, self.Write_Line, lin2)
+		self.Bind(wx.EVT_TOOL, self.URL_L, link2)
 		
 		on14 = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'e.png'), _('Exit'))
 		self.Bind(wx.EVT_TOOL, self.OnCloseWindow, on14)
@@ -336,6 +360,7 @@ class Upim_Manager(wx.Frame):
 		self.Wins()
 		# ++++++++++++++++++++++
 		
+		# статусбар
 		self.sb = wx.StatusBar(self, -1)
 		self.sb.SetBackgroundColour(conf_db.Dobd_class('colorviz').baz_vst())
 		self.sb.SetFieldsCount(3)
@@ -432,8 +457,26 @@ class Upim_Manager(wx.Frame):
 			conf_db.Ubd_class('caloff', 'Off').baz_vsb()
 		else:
 			conf_db.Ubd_class('caloff', 'On').baz_vsb()
-
-
+	
+	# открытые файлы
+	def Fileot(self, event):
+		im = sys_inf.ICON_PATH + 's1.png'
+		self.submenu = wx.Menu()
+		for i in conf_db.nedlist:
+			a = i.split('/')[6]
+			items = wx.MenuItem(self.submenu, -1, a.split('.')[0])
+			items.SetBitmap(wx.Bitmap(im))
+			self.Bind(wx.EVT_MENU, self.Lows, items)
+			self.submenu.AppendItem(items)
+		self.PopupMenu(self.submenu)
+		
+	def Lows(self, event):
+		rec = self.submenu.FindItemById(event.GetId())
+		partc = rec.GetText().encode('utf-8').decode('latin-1').encode('latin-1')
+		for y in conf_db.nedlist:
+			if partc + '.ox' == y.split('/')[6]:
+				self.win.LoadFile(y)
+	
 	def On2(self, event):
 		wildcard= "Page ox (*.ox)|*.ox|"
 		dlg = wx.FileDialog(self, _("Choice file"), sys_inf.DATA_PATH, wildcard=wildcard, style=wx.OPEN)
@@ -442,7 +485,7 @@ class Upim_Manager(wx.Frame):
 			if path:
 				panel_richtext.Upim_Writer(path).Show()			
 		dlg.Destroy()
-		
+	# печать - без бакгроунда!!!	
 	def Print(self, event):
 		if self.win.GetFilename() != '':
 			self.printer = text.RichTextPrinting()
@@ -511,7 +554,7 @@ class Upim_Manager(wx.Frame):
 # я не знаю доподлинно, что здесь написано	
 	def On9(self, event):	
 		description = """Upim Manager is an advanced content-richtext manager for 
-Unix operating system. Features include powerful richtext editor, 
+Linux operating system. Features include powerful richtext editor, 
 advanced search capabilities and more.
 """
 		lic = '/usr/local/share/upim/LICENSE'
@@ -519,9 +562,9 @@ advanced search capabilities and more.
 		info = wx.AboutDialogInfo()
 		info.SetName('Upim Manager')
 		info.SetIcon(wx.Icon(sys_inf.ICON_PATH + 'upim.png', wx.BITMAP_TYPE_PNG))
-		info.SetVersion('1.0.2')
+		info.SetVersion('1.0.3')
 		info.SetDescription(description)
-		info.SetCopyright('(C) 2013 - 2016 Victor Frig')
+		info.SetCopyright('(C) 2013 - 2017 Victor Frig')
 		info.SetLicence(licence)
 		info.AddDeveloper('Victor Frig aka Prohodimec')
 		wx.AboutBox(info)
@@ -720,10 +763,12 @@ advanced search capabilities and more.
 		try:
 			if event.GetString().encode('utf-8').decode('latin-1').encode('latin-1').split('/')[6].split('.')[1] == 'ox':
 				self.win.LoadFile(event.GetString().encode('utf-8').decode('latin-1').encode('latin-1'))
+				conf_db.Listrem(event.GetString().encode('utf-8').decode('latin-1').encode('latin-1'))
 			else:
 				os.system('xdg-open ' + '"' + event.GetString().encode('utf-8').decode('latin-1').encode('latin-1') + '"' + ' &')
 		except IndexError:
-			os.system('xdg-open ' + '"' + event.GetString().encode('utf-8').decode('latin-1').encode('latin-1') + '"' + ' &')	
+			os.system('xdg-open ' + '"' + event.GetString().encode('utf-8').decode('latin-1').encode('latin-1') + '"' + ' &')
+		
 # мелочи
 	def Clears(self, event):
 		self.win.Clear()
@@ -769,7 +814,7 @@ advanced search capabilities and more.
 					self.Os(fil)
 	
 
-	def OnFileSaveHTML(self, event):
+	def OnFileSaveHTML(self, event): #то же без бакгроунда, замените <body> на <body bgcolor='#цветхх'> и печатайте через браузер => в pdf
 		tch = sys_inf.HOME_PATH
 		wildcard= "Page html (*.html)|*.html|"
 		dlg = wx.FileDialog(self, _("Create file"), tch, wildcard=wildcard, style=wx.SAVE)
@@ -802,7 +847,7 @@ advanced search capabilities and more.
 					self.win.SaveFile(savep)
 		dlg.Destroy()
 
-# ---------------------вот эта фор-ла encode.decode спасает от ужаса ru	
+# ---------------------вот эта фор-ла "encode.decode" спасает от ужаса ru	
 	def Vub(self, event):
 		if self.ch.GetValue().encode('utf-8').decode('latin-1').encode('latin-1') == _('Jan'):
 			m = 0

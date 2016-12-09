@@ -14,7 +14,8 @@ import sys_inf
 import tx
 sys_inf.GetTxt()
 
-# универсальная панель для отображения структуры дневниковых записей - заметок
+# Панель треевидного коллектора заметок
+
 class TabPanel(wx.Panel):
 	def __init__(self, parent, wop, pths, names):
 		wx.Panel.__init__(self, parent=parent)
@@ -26,18 +27,17 @@ class TabPanel(wx.Panel):
 		self.SetMinSize((self.dis[6], self.dis[2]))
 		self.tcTree = wx.TreeCtrl(self, size=(self.dis[6], self.dis[2]-25), pos=(0, 25))
 		
-		rec = wx.BitmapButton(self, -1, wx.Bitmap(sys_inf.ICON_PATH + 'rece.png', wx.BITMAP_TYPE_PNG), pos=(0,0), size=(25, 25), style=wx.NO_BORDER)
-		rec.Bind(wx.EVT_BUTTON, self.Recent, rec)
-		sv = wx.BitmapButton(self, -1, wx.Bitmap(sys_inf.ICON_PATH + 'cver.png', wx.BITMAP_TYPE_PNG), pos=(30,0), size=(25, 25), style=wx.NO_BORDER)
+		# кнопки свернуть-развернуть, вверх-вниз
+		sv = wx.BitmapButton(self, -1, wx.Bitmap(sys_inf.ICON_PATH + 'cver.png', wx.BITMAP_TYPE_PNG), pos=(0,0), size=(25, 25), style=wx.NO_BORDER)
 		sv.Bind(wx.EVT_BUTTON, self.Coll, sv)
-		sn	= wx.BitmapButton(self, -1, wx.Bitmap(sys_inf.ICON_PATH + 'cniz.png', wx.BITMAP_TYPE_PNG), pos=(55,0), size=(25, 25), style=wx.NO_BORDER)	
+		sn	= wx.BitmapButton(self, -1, wx.Bitmap(sys_inf.ICON_PATH + 'cniz.png', wx.BITMAP_TYPE_PNG), pos=(25,0), size=(25, 25), style=wx.NO_BORDER)	
 		sn.Bind(wx.EVT_BUTTON, self.OnP4, sn)
-		dw	= wx.BitmapButton(self, -1, wx.Bitmap(sys_inf.ICON_PATH + 'cdw.png', wx.BITMAP_TYPE_PNG), pos=(83,0), size=(25, 25), style=wx.NO_BORDER)	
+		dw	= wx.BitmapButton(self, -1, wx.Bitmap(sys_inf.ICON_PATH + 'cdw.png', wx.BITMAP_TYPE_PNG), pos=(55,0), size=(25, 25), style=wx.NO_BORDER)	
 		dw.Bind(wx.EVT_BUTTON, self.Down, dw)
-		up	= wx.BitmapButton(self, -1, wx.Bitmap(sys_inf.ICON_PATH + 'cup.png', wx.BITMAP_TYPE_PNG), pos=(108,0), size=(25, 25), style=wx.NO_BORDER)	
+		up	= wx.BitmapButton(self, -1, wx.Bitmap(sys_inf.ICON_PATH + 'cup.png', wx.BITMAP_TYPE_PNG), pos=(80,0), size=(25, 25), style=wx.NO_BORDER)	
 		up.Bind(wx.EVT_BUTTON, self.Up, up)
 		
-		
+		# биндинг и шрифты
 		self.tcTree.Bind(wx.EVT_TREE_SEL_CHANGED, self.SelChan)
 		self.tcTree.Bind(wx.EVT_TREE_ITEM_RIGHT_CLICK, self.RightClick)
 		self.tcTree.SetBackgroundColour(str(conf_db.Dobd_class('cvettr').baz_vst()))
@@ -45,6 +45,7 @@ class TabPanel(wx.Panel):
 		self.font = wx.Font(conf_db.Dobd_class('fontraztrey').baz_vst(), wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD, False, conf_db.Dobd_class('fonttrey').baz_vst())
 		self.font2 = wx.Font(conf_db.Dobd_class('fontraztreyIt').baz_vst(), wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, conf_db.Dobd_class('fonttreyIt').baz_vst())
 		
+		# сканер папок
 		if self.names != _('Not folder'):
 			t = self.tcTree.AddRoot(self.names)
 			images1 = sys_inf.ICON_PATH + 'sear.png'
@@ -125,7 +126,8 @@ class TabPanel(wx.Panel):
 							
 		self.tcTree.ExpandAll()
 		self.tcTree.SortChildren(self.tcTree.GetSelection())
-		
+	
+	# функция отображения	
 	def SelChan(self, event):		
 		item = self.tcTree.GetSelection()
 		tc = self.tcTree.GetItemText(item).encode('utf-8').decode('latin-1').encode('latin-1')
@@ -134,6 +136,7 @@ class TabPanel(wx.Panel):
 					self.wop.LoadFile(u)
 					conf_db.Listrem(u)
 					
+	# меню				
 	def RightClick(self, event):
 		self.popupmenu = wx.Menu()
 		fil = sys_inf.ICON_PATH + '1.png'
@@ -159,6 +162,7 @@ class TabPanel(wx.Panel):
 		self.tcTree.PopupMenu(self.popupmenu)
 		self.tcTree.Layout()
 		
+	# функции биндинга: удаления, открытия и т.п.		
 	def OnRD(self, event):
 		itemf = self.tcTree.GetSelection()
 		tcf = self.tcTree.GetItemText(itemf).encode('utf-8').decode('latin-1').encode('latin-1')
@@ -219,26 +223,9 @@ class TabPanel(wx.Panel):
 	
 	def Coll(self, event):
 		self.tcTree.CollapseAll()
-	
-	def Recent(self, event):
-		im = sys_inf.ICON_PATH + 's1.png'
-		self.submenu = wx.Menu()
-		for i in conf_db.nedlist:
-			a = i.split('/')[6]
-			items = wx.MenuItem(self.submenu, -1, a.split('.')[0])
-			items.SetBitmap(wx.Bitmap(im))
-			self.Bind(wx.EVT_MENU, self.Low, items)
-			self.submenu.AppendItem(items)
-		self.PopupMenu(self.submenu)
-	
-	def Low(self, event):
-		rec = self.submenu.FindItemById(event.GetId())
-		partc = rec.GetText().encode('utf-8').decode('latin-1').encode('latin-1')
-		for y in conf_db.nedlist:
-			if partc + '.ox' == y.split('/')[6]:
-				self.wop.LoadFile(y)
 
 	def Down(self, event):
 		self.tcTree.ScrollLines(self.tcTree.GetCount()*2)
+	
 	def Up(self, event):
 		self.tcTree.ScrollLines(-self.tcTree.GetCount()*2)
