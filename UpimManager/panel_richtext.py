@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Created on Fri Feb 14 16:14:33 2016
+Created on 2016 year
 
-@author: Prohodimec 
+@author: FrIg aka Prohodimec 
 """
 import wx
 import time
@@ -16,14 +16,17 @@ from sys import argv
 import validate
 sys_inf.GetTxt()
 
-#практически те же функ., что и в менеджере, поэтому нет иного коментов
-
+"""
+практически те же функ., что и в менеджере, поэтому нет иного коментов
+"""
 class Upim_Writer(wx.Frame):
 	def __init__(self, patch=None):
 		self.patch = patch# путь к файлу, чтобы запускать из bash: $1, для того и ссылка
-		self.disp = sys_inf.Sizer()
-		wx.Frame.__init__(self, None, title="Upim Writer", size=(self.disp[0] - 20, self.disp[1] - 200),  style=wx.DEFAULT_FRAME_STYLE)
 		
+		self.disp = sys_inf.Sizer()
+		
+		wx.Frame.__init__(self, None, title="Upim Writer", size=(self.disp[0] - 20, self.disp[1] - 200),  style=wx.DEFAULT_FRAME_STYLE)
+
 		f = sys_inf.ICON_PATH  + 'up.png'
 		self.SetIcon(wx.Icon(f, wx.BITMAP_TYPE_PNG))
 		
@@ -171,39 +174,23 @@ class Upim_Writer(wx.Frame):
 		menu7= wx.Menu()
 		menuBar.Append(menu7, _("Notes"))
 		
-		i1 = sys_inf.ICON_PATH + 'sear.png'
+		i0 = sys_inf.ICON_PATH + 'sse.png'
+		itns =  wx.MenuItem(menu7, -1, _('Search notes'))
+		itns.SetBitmap(wx.Bitmap(i0))
+		menu7.AppendItem(itns)
+		self.Bind(wx.EVT_MENU, self.OnSear, itns)
+		
+		i1 = sys_inf.ICON_PATH + 'acce.png'
 		itnd =  wx.MenuItem(menu7, -1, _('My diary'))
 		itnd.SetBitmap(wx.Bitmap(i1))
 		menu7.AppendItem(itnd)
 		self.Bind(wx.EVT_MENU, self.OnDiary, itnd)
 		
-		i2 = sys_inf.ICON_PATH + 'cut4.png'
+		i2 = sys_inf.ICON_PATH + 'acce2.png'
 		itno =  wx.MenuItem(menu7, -1, _('My notes'))
 		itno.SetBitmap(wx.Bitmap(i2))
 		menu7.AppendItem(itno)
 		self.Bind(wx.EVT_MENU, self.OnOther, itno)
-		
-		# листы для меню заметок
-		self.LIST = []
-		foo = sys_inf.DATA_PATH + 'Other/'
-		for papo in os.listdir(foo):
-			fifo = foo + papo
-			if os.path.isdir(fifo):
-				for fapo in os.listdir(fifo):
-					self.LIST.append(fapo)
-		self.LIST.sort()
-		
-		
-		self.LIST2 = []
-		fo = sys_inf.DATA_PATH + 'Data/'
-		for ppo in os.listdir(fo):
-			ffo = fo + ppo
-			if os.path.isdir(ffo):
-				for fap in os.listdir(ffo):
-					self.LIST2.append(fap)
-		self.LIST2.sort()
-		
-		
 		
 		menu5 = wx.Menu()
 		fns = sys_inf.ICON_PATH  + 'nas1.png'
@@ -227,12 +214,12 @@ class Upim_Writer(wx.Frame):
 		self.SetMenuBar(menuBar)
 
 		tb = self.CreateToolBar( wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT | wx.TB_TEXT)
-		
+		#
 		if conf_db.Dobd_class('toolbar').baz_vst() != 'Not':
 			tb.Show()
 		else:
 			tb.Hide()
-		
+		#
 		opp = tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH  + '11b.png'), _('Write time and date'))
 		
 		tb.AddSeparator()
@@ -325,6 +312,7 @@ class Upim_Writer(wx.Frame):
 		self.win = text.RichTextCtrl(self, pos =wx.DefaultPosition, style = wx.DEFAULT_FRAME_STYLE)
 		self.win.SetBackgroundColour(conf_db.Dobd_class('cvetwrit').baz_vst())
 		self.win.Bind(wx.EVT_TEXT_URL, self.OnURLS)
+		
 		wx.CallAfter(self.win.SetFocus)
 		
 		font2 = wx.Font(conf_db.Dobd_class('fontrazwrit').baz_vst(), wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD, False, conf_db.Dobd_class('fontwrit').baz_vst())
@@ -335,8 +323,10 @@ class Upim_Writer(wx.Frame):
 		
 		if conf_db.Dobd_class('colorviz').baz_vst() == '#FFFFFF':
 			self.win.BeginTextColour((0, 0, 0))
+			self.cvet = '#000000'
 		else:
 			self.win.BeginTextColour((170, 153, 110))
+			self.cvet = '#FFFFFF'
 			
 		if sys_inf.Loc() == 'ru_RU':
 			h2 = time.strftime('%H:%M мин. %d %h %G года\n') + int(conf_db.Dobd_class('ul').baz_vst())*'-' + '\n'
@@ -358,13 +348,13 @@ class Upim_Writer(wx.Frame):
 				d2 = ''
 		self.win.WriteText(d2 + h2)	
 
-		
+		#
 		dt = drag_drop.FileDrop(self.win)
 		self.win.SetDropTarget(dt)
-		
+		#
 		if self.patch is not None:
 			self.win.LoadFile(self.patch)
-			
+		#	
 		try:
 			if argv[1]:
 				try:
@@ -374,61 +364,143 @@ class Upim_Writer(wx.Frame):
 					self.win.LoadFile(argv[1])
 		except IndexError:
 			pass
-			
+		#	
+		self.font_rz = wx.Font(12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD, False, 'Sans')	
+		#
 	def PosDw(self, event):
 		self.win.ShowPosition(len(self.win.GetValue().encode('utf-8').decode('latin-1').encode('latin-1')))
 		
 	def PosUp(self, event):
 		self.win.ShowPosition(2)
 		
-	def OnDiary(self, event):
-		self.submenus2 = wx.Menu()
-		fs2 = sys_inf.ICON_PATH + 'sear1.png'
-		for litas in self.LIST2:			
-			itd = wx.MenuItem(self.submenus2, -1, litas.split('.')[0])		
-			itd.SetBitmap(wx.Bitmap(fs2))
-			self.submenus2.AppendItem(itd)
-			self.submenus2.Bind(wx.EVT_MENU, self.Ondiary, itd)	
-		self.PopupMenu(self.submenus2)
-	
-	def OnOther(self, event):
-		self.submenus = wx.Menu()
-		fs = sys_inf.ICON_PATH + 'ev.png'
-		for lita in self.LIST:
-			itx = wx.MenuItem(self.submenus, -1, lita.split('.')[0])		
-			itx.SetBitmap(wx.Bitmap(fs))
-			self.submenus.AppendItem(itx)
-			self.submenus.Bind(wx.EVT_MENU, self.Onotes, itx)	
-		self.PopupMenu(self.submenus)
+	# функции и биндинг лисбоксов заметок и поиска, что нет в diary
+	def OnSear(self, event):
+		self.pan = wx.Panel(self, -1, size=(self.disp[0] - 20, 160), pos=(0, 0))
+		self.pan.SetBackgroundColour(conf_db.Dobd_class('cvetwrit').baz_vst())
+		self.pan.SetForegroundColour(self.cvet)
+		t1f = wx.StaticText(self.pan, -1, _("Find notes"), (self.disp[0]/2.3, 4))
+		t1f.SetFont(self.font_rz)
+		self.tex = wx.TextCtrl(self.pan, -1, _("Write text for searching"), pos=(22, 30), size=(250, 25))
+		buttons = wx.Button(self.pan, label=_("Search"), size=(64, 25), pos=(275, 30))
+		buttons.Bind(wx.EVT_BUTTON, self.Nahod, buttons)
+		cuts = wx.BitmapButton(self.pan, -1, wx.Bitmap(sys_inf.ICON_PATH  + 'cutp.png', wx.BITMAP_TYPE_PNG), pos=(self.disp[0] - 42, 10), size=(20, 20), style=wx.NO_BORDER)
+		cuts.Bind(wx.EVT_BUTTON, self.ClosePan, cuts)
 		
-	def Onotes(self, event):
+	def Nahod(self, event):
+		self.LIS = []
+		if self.tex.GetValue().encode('utf-8').decode('latin-1').encode('latin-1') != _("Write text for searching"):
+			if self.tex.GetValue() != '':
+				text_search = self.tex.GetValue().encode('utf-8').decode('latin-1').encode('latin-1') 
+				conf_db.Ds(text_search, self.LIS)
+		self.listBoxN = wx.ListBox(self.pan, -1, (0, 60), (self.disp[0] - 20, 100), self.LIS, wx.LB_SORT)
+		self.listBoxN.SetBackgroundColour(conf_db.Dobd_class('cvetwrit').baz_vst())
+		self.listBoxN.SetForegroundColour(self.cvet)
+		self.listBoxN.Bind(wx.EVT_LISTBOX_DCLICK, self.SelectN)
+		
+	def SelectN(self, event):
 		del conf_db.dlist[:]
-		conf_db.Lists(self.win.GetFilename())
-		items = self.submenus.FindItemById(event.GetId())
-		itemst = items.GetText().encode('utf-8').decode('latin-1').encode('latin-1') + '.ox'
-		foms = sys_inf.DATA_PATH + 'Other/'
-		for fotst in os.listdir(foms):
-			patcj = foms + fotst
-			if os.path.isdir(patcj):
-				for futas in os.listdir(patcj):
-					if futas == itemst:
-						self.win.LoadFile(patcj + '/' + futas)	
-						conf_db.Lists(self.win.GetFilename())
+		conf_db.Lists(self.win.GetFilename())	
+		ztxN = self.listBoxN.GetStringSelection().encode('utf-8').decode('latin-1').encode('latin-1')
+		pat = [sys_inf.DATA_PATH + 'Data', sys_inf.DATA_PATH + 'Other']
+		for patch in pat: 
+			for i in os.listdir(patch):
+				zt = patch + '/' + i
+				if os.path.isfile(zt):
+					pass
+				else:
+					for files in os.listdir(zt):
+						if files == ztxN + '.ox':
+							if os.path.exists(zt + '/' + files):
+								self.win.LoadFile(zt + '/' + files)
+								conf_db.Lists(self.win.GetFilename())
+							
+	def OnDiary(self, event):
+		self.LIST2 = []
+		fo = sys_inf.DATA_PATH + 'Data/'
+		for ppo in os.listdir(fo):
+			ffo = fo + ppo
+			if os.path.isdir(ffo):
+				for fap in os.listdir(ffo):
+					self.LIST2.append(fap)
+		self.CloseList()
+		self.pan1 = wx.Panel(self, -1, size=(self.disp[0] - 20, 160), pos=(0, 0))
+		cut2 = wx.BitmapButton(self.pan1, -1, wx.Bitmap(sys_inf.ICON_PATH  + 'cutp.png', wx.BITMAP_TYPE_PNG), pos=(self.disp[0] - 42, 10), size=(20, 20), style=wx.NO_BORDER)
+		cut2.Bind(wx.EVT_BUTTON, self.ClosePan, cut2)
+		t1 = wx.StaticText(self.pan1, -1, _("My diary"), (self.disp[0]/2.3, 4))
+		t1.SetFont(self.font_rz)
+		self.listBoxQ = wx.ListBox(self.pan1, -1, (0, 40), (self.disp[0] - 20, 120), self.LIST2, wx.LB_SORT)
+		self.listBoxQ.Bind(wx.EVT_LISTBOX_DCLICK, self.SelectQ)
+		self.listBoxQ.SetBackgroundColour(conf_db.Dobd_class('cvetwrit').baz_vst())
+		self.listBoxQ.SetForegroundColour(self.cvet)
 	
-	def Ondiary(self, event):
+	def SelectQ(self, event):
 		del conf_db.dlist[:]
-		conf_db.Lists(self.win.GetFilename())
-		ite = self.submenus2.FindItemById(event.GetId())
-		item = ite.GetText().encode('utf-8').decode('latin-1').encode('latin-1') + '.ox'
-		fms = sys_inf.DATA_PATH + 'Data/'
-		for ftst in os.listdir(fms):
-			patch = fms + ftst
-			if os.path.isdir(patch):
-				for ftas in os.listdir(patch):
-					if ftas == item:
-						self.win.LoadFile(patch + '/' + ftas)	
+		conf_db.Lists(self.win.GetFilename())	
+		ztxs = self.listBoxQ.GetStringSelection().encode('utf-8').decode('latin-1').encode('latin-1')
+		fmd = sys_inf.DATA_PATH + 'Data/'
+		for ftd in os.listdir(fmd):
+			patcd = fmd + ftd
+			if os.path.isdir(patcd):
+				for ftas in os.listdir(patcd):
+					if ftas == ztxs:
+						self.win.LoadFile(patcd + '/' + ftas)
 						conf_db.Lists(self.win.GetFilename())
 						
+	def OnOther(self, event):
+		self.LIST = []
+		foo = sys_inf.DATA_PATH + 'Other/'
+		for papo in os.listdir(foo):
+			fifo = foo + papo
+			if os.path.isdir(fifo):
+				for fapo in os.listdir(fifo):
+					self.LIST.append(fapo)
+		self.CloseList()
+		self.pan2 = wx.Panel(self, -1, size=(self.disp[0] - 20, 160), pos=(0, 0))
+		t2 = wx.StaticText(self.pan2, -1, _("My notes"), (self.disp[0]/2.3, 4))
+		t2.SetFont(self.font_rz)
+		cut1 = wx.BitmapButton(self.pan2, -1, wx.Bitmap(sys_inf.ICON_PATH  + 'cutp.png', wx.BITMAP_TYPE_PNG), pos=(self.disp[0] - 42, 10), size=(20, 20), style=wx.NO_BORDER)
+		cut1.Bind(wx.EVT_BUTTON, self.ClosePan, cut1)
+		self.listBoxW = wx.ListBox(self.pan2, -1, (0, 40), (self.disp[0] - 20, 120), self.LIST, wx.LB_SORT)
+		
+		self.listBoxW.Bind(wx.EVT_LISTBOX_DCLICK, self.SelectW)
+		self.listBoxW.SetBackgroundColour(conf_db.Dobd_class('cvetwrit').baz_vst())
+		self.listBoxW.SetForegroundColour(self.cvet)	
+		
+	def SelectW(self, event):
+		del conf_db.dlist[:]
+		conf_db.Lists(self.win.GetFilename())
+		ztxo = self.listBoxW.GetStringSelection().encode('utf-8').decode('latin-1').encode('latin-1')
+		fmo = sys_inf.DATA_PATH + 'Other/'
+		for fto in os.listdir(fmo):
+			patco = fmo + fto
+			if os.path.isdir(patco):
+				for ftos in os.listdir(patco):
+					if ftos == ztxo:
+						self.win.LoadFile(patco + '/' + ftos)
+						conf_db.Lists(self.win.GetFilename())
+
+
+	def ClosePan(self, event):
+		self.CloseList()
+			
+	def CloseList(self):
+		try:
+			if self.pan:
+				self.pan.Destroy()
+		except:
+			pass
+		try:
+			if self.pan1:
+				self.pan1.Destroy()
+		except:
+			pass
+		try:
+			if self.pan2:
+				self.pan2.Destroy()	
+		except:
+			pass
+			
+	# мелочи		
 	def Onj1(self, event):
 		os.system('python ' + sys_inf.UPIM_PATH + 'panel_richtext.py &')	
 		
@@ -443,15 +515,14 @@ class Upim_Writer(wx.Frame):
 			if path:
 				self.win.LoadFile(path)
 		dlg.Destroy()
-
-	
+	#
 	def On8(self, event):
 		if sys_inf.Loc() == 'ru_RU':
 			self.win.LoadFile('/usr/local/share/upim/ManualRU.ox')
 		else:
 			self.win.Clear()
 			self.win.WriteText('Not tutorial to ' + sys_inf.Loc().split('_')[1] + ' language! :-(')
-	
+	#
 	def On9(self, event):	
 		description = """Upim Writer is an advanced powerful richtext editor, viewer for Linux.
 """
@@ -459,13 +530,13 @@ class Upim_Writer(wx.Frame):
 		licence = open(lic, 'r').read()
 		info = wx.AboutDialogInfo()
 		info.SetName('Upim Writer')
-		info.SetVersion('1.0.3')
+		info.SetVersion('1.0.4')
 		info.SetDescription(description)
 		info.SetCopyright('(C) 2013 - 2017 Victor Frig')
 		info.SetLicence(licence)
 		info.AddDeveloper('Victor Frig aka Prohodimec')
 		wx.AboutBox(info)
-		
+	#	
 	def URL2(self, event):
 		self.pnn = wx.Panel(self, -1, size=(280, 100), pos=(500, 400))
 		self.aText = wx.TextCtrl(self.pnn, -1, _("Write name link"), size=(270, 30), pos=(5, 2))
@@ -475,7 +546,7 @@ class Upim_Writer(wx.Frame):
 		button_write.Bind(wx.EVT_BUTTON, self.URL_apS, button_write)
 		button_e = wx.Button(self.pnn, -1, _("Cancel"), size=(130,30), pos=(145, 66))
 		button_e.Bind(wx.EVT_BUTTON, self.ExS, button_e)
-
+	#
 	def URL_apS(self, event):
 		if self.aText.GetValue().encode('utf-8').decode('latin-1').encode('latin-1') != _("Write name link"):
 			if self.aText.GetValue() != '':
@@ -493,7 +564,7 @@ class Upim_Writer(wx.Frame):
 		self.win.EndStyle()
 		self.pnn.Destroy()
 		self.win.WriteText('      ')
-		
+	#	
 	def FILE_apS(self, event):		
 		dlg = wx.FileDialog(self, _("Choice file"), style=wx.OPEN)
 		if dlg.ShowModal() == wx.ID_OK:
@@ -502,10 +573,11 @@ class Upim_Writer(wx.Frame):
 				self.URL_apS()
 		dlg.Destroy()
 		self.pnn.Destroy()
-
+	#
 	def PanNap(self, event):
 		os.system('python '+ sys_inf.UPIM_PATH + 'soxr_nap.py &')	
-	
+		
+	# туда-сюда 1 позишен
 	def Tf(self, event):
 		i = 1
 		f = len(conf_db.dlist)
@@ -523,7 +595,7 @@ class Upim_Writer(wx.Frame):
 
 	def ExS(self, event):
 		self.pnn.Destroy()
-
+	#	
 	def OnURLS(self, event):
 		try:
 			if event.GetString().encode('utf-8').decode('latin-1').encode('latin-1').split('/')[6].split('.')[1] == 'ox':
@@ -535,8 +607,7 @@ class Upim_Writer(wx.Frame):
 				os.system('xdg-open ' + '"' + event.GetString().encode('utf-8').decode('latin-1').encode('latin-1') + '"' + ' &')
 		except IndexError:
 			os.system('xdg-open ' + '"' + event.GetString().encode('utf-8').decode('latin-1').encode('latin-1') + '"' + ' &')
-		
-
+	#
 	def To_Left(self, event):
 		self.win.ApplyAlignmentToSelection(text.TEXT_ALIGNMENT_LEFT) 
 		
@@ -545,26 +616,26 @@ class Upim_Writer(wx.Frame):
 		
 	def To_Right(self, event):
 		self.win.ApplyAlignmentToSelection(text.TEXT_ALIGNMENT_RIGHT)
-		
+	#	
 	def Write_Line(self, event):
 		self.win.WriteText(int(conf_db.Dobd_class('ul').baz_vst())*'-' + '\n')
-	
+	#
 	def Clears(self, event):
 		self.win.Clear()
-	
+	#
 	def OnFileOpen(self, evt):
 		if sys_inf.Loc() == 'ru_RU':
 			self.win.WriteText(time.strftime('%d %h %G года  %H:%M мин'))
 		else:
 			self.win.WriteText(time.strftime('%d %h %G years  %H:%M min'))
-			
+	#		
 	def OnFileSaveAs(self, evt):
 		import soxr
 		soxr.Soxr(self, None, self.win)
-	
+	#
 	def OnCloses(self, event):
 		self.Destroy()
-
+	#
 	def OnFont(self, evt):
 		if not self.win.HasSelection():
 			return
@@ -584,7 +655,7 @@ class Upim_Writer(wx.Frame):
 				attr.SetFont(font)
 				self.win.SetStyle(r, attr)
 		dlg.Destroy()
-	
+	#
 	def OnColour(self, evt):
 		colourData = wx.ColourData()
 		attr = text.TextAttrEx()
@@ -604,13 +675,13 @@ class Upim_Writer(wx.Frame):
 					attr.SetTextColour(colour)
 					self.win.SetStyle(r, attr)
 		dlg.Destroy()
-		
+	#	
 	def prints(self, event):
 		if self.win.GetFilename() != '':
 			self.printer = text.RichTextPrinting()
 			self.printer.GetPrintData()
 			self.printer.PrintFile(self.win.GetFilename())
-
+	#
 	def AddRTCHandlers(self):
 		if text.RichTextBuffer.FindHandlerByType(text.RICHTEXT_TYPE_HTML) is not None:
 			return
@@ -619,11 +690,11 @@ class Upim_Writer(wx.Frame):
                                                            type=99))
 		text.RichTextBuffer.AddHandler(text.RichTextHTMLHandler())
 		wx.FileSystem.AddHandler(wx.MemoryFSHandler())	
-	
+	#
 	def OnImageOpen(self, event):
 		import imag
 		imag.TestFrame(self.win).Show()
-	
+	#
 	def Sav(self, event):
 		if self.win.GetFilename().encode('utf-8').decode('latin-1').encode('latin-1') != '':
 			if self.win.IsModified():
@@ -633,7 +704,7 @@ class Upim_Writer(wx.Frame):
 					fils = self.win.GetFilename().encode('utf-8').decode('latin-1').encode('latin-1')
 					self.win.SaveFile(fils)
 					self.Osh(fils)	
-						
+	#					
 	def Bold(self, event):
 		self.win.ApplyBoldToSelection()
 
@@ -642,7 +713,7 @@ class Upim_Writer(wx.Frame):
 	
 	def Underline(self, event):
 		self.win.ApplyUnderlineToSelection()
-	
+	#
 	def Lines(self, event):
 		attr = text.TextAttrEx()
 		attr.SetFlags(text.TEXT_ATTR_LEFT_INDENT)
@@ -654,7 +725,7 @@ class Upim_Writer(wx.Frame):
 			attr.SetLeftIndent(attr.GetLeftIndent() + 100)
 			attr.SetFlags(text.TEXT_ATTR_LEFT_INDENT)
 			self.win.SetStyle(r, attr)
-
+	#
 	def OnCloseWindow(self, event):
 		if self.win.GetFilename().encode('utf-8').decode('latin-1').encode('latin-1') != '':
 			if self.win.IsModified():		
@@ -667,7 +738,7 @@ class Upim_Writer(wx.Frame):
 				self.Destroy()
 		else:
 			self.Destroy()					
-		
+	#	
 	def NewsLines(self, event):
 		attr = text.TextAttrEx()
 		attr.SetFlags(text.TEXT_ATTR_LEFT_INDENT)
@@ -680,7 +751,7 @@ class Upim_Writer(wx.Frame):
 			attr.SetLeftIndent(attr.GetLeftIndent() - 100)
 			attr.SetFlags(text.TEXT_ATTR_LEFT_INDENT)
 			self.win.SetStyle(r, attr)
-
+	#
 	def Savz(self, event):# Помнишь меня!?! - Nain!
 		tch = sys_inf.DATA_PATH + 'Other/'
 		wildcard= "Page ox (*.ox)|*.ox|"
@@ -703,7 +774,7 @@ class Upim_Writer(wx.Frame):
 					self.win.SaveFile(savep)
 				
 		dlg.Destroy()
-		
+	#	
 	def OnFileSaveHtml(self, event):
 		tch = sys_inf.HOME_PATH
 		wildcard= "Page html (*.html)|*.html|"
@@ -714,13 +785,12 @@ class Upim_Writer(wx.Frame):
 				savep = path + '.html'
 				self.win.SaveFile(savep)
 		dlg.Destroy()	
-		
+	#	
 	def Osh(self, path):
 		pt = path.split('/')[6]
 		once = self.win.GetValue().encode('utf-8').decode('latin-1').encode('latin-1')
 		conf_db.dobdb(pt, once)
-	
-					
+		
 if __name__ == '__main__':		
 	app = wx.App()
 	Upim_Writer().Show()

@@ -1,9 +1,9 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 """
-Created on Fri Feb 14 16:14:33 2016
+Created on 2016 year
 
-@author: Prohodimec 
+@author: FrIg aka Prohodimec 
 """
 import wx
 import wx.richtext as text
@@ -30,14 +30,13 @@ class Upim_Manager(wx.Frame):
 			fl = sys_inf.ICON_PATH + 'logos.png'
 			bmp = wx.Image(fl).ConvertToBitmap()
 			wx.SplashScreen(bmp, wx.SPLASH_CENTRE_ON_SCREEN | wx.SPLASH_TIMEOUT,
-                1000, None, -1)
+			1000, None, -1)
 
 		self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)# не даём выйти без сохранения
 
 		self.dis = sys_inf.Sizer()# сайзер, по нелепости править sys_inf
 	
-		self.SetIcon(wx.Icon(sys_inf.ICON_PATH + 'upim.png', wx.BITMAP_TYPE_PNG))
-	
+		self.SetIcon(wx.Icon(sys_inf.ICON_PATH + 'upim.png', wx.BITMAP_TYPE_PNG))	
 #меню и тулбар
 		menuBar = wx.MenuBar()#менюбар
 		
@@ -235,10 +234,7 @@ class Upim_Manager(wx.Frame):
 		menu5.AppendItem(itm9)
 		self.Bind(wx.EVT_MENU, self.On9, itm9)
 		self.SetMenuBar(menuBar)
-		
-
-		
-	
+		# тулбар
 		self.tb = self.CreateToolBar( wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT | wx.TB_TEXT)
 		
 		if conf_db.Dobd_class('toolbar').baz_vst() != 'Not':# пок/скр тулбар
@@ -286,9 +282,7 @@ class Upim_Manager(wx.Frame):
 		self.Bind(wx.EVT_TOOL, self.PosDw, podws)
 		self.Bind(wx.EVT_TOOL, self.PosUp, poups)
 		
-		
 		self.tb.AddSeparator()
-		
 		
 		li = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'format-justify-left.png'), _('Left'))
 		ct = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'format-justify-center.png'), _('Centre'))
@@ -302,7 +296,7 @@ class Upim_Manager(wx.Frame):
 		self.tb.AddSeparator()
 		
 		goods = int(time.strftime('%G'))
-		
+		# выбор месяцев и годов для переключения календаря
 		montd = [_('Jan'), _('Feb'), _('Mar'), _('Apr'), _('May'), _('Jun'), _('Jul'), _('Aug'), _('Sep'), _('Oct'), _('Nov'), _('Dec')]
 		self.ch = wx.ComboBox(self.tb, -1, value = '', choices=montd, size=(100, 22), style=wx.CB_DROPDOWN)
 		
@@ -345,13 +339,16 @@ class Upim_Manager(wx.Frame):
 		on14 = self.tb.AddSimpleTool(-1, wx.Bitmap(sys_inf.ICON_PATH + 'e.png'), _('Exit'))
 		self.Bind(wx.EVT_TOOL, self.OnCloseWindow, on14)
 		
-		
 		# по дефолту - на сегодня
 		i = int(time.strftime('%m')) - 1
 		ds = int(time.strftime('%G'))
+		# дата и таймер
+		if sys_inf.Loc() == 'ru_RU':
+			god = ' года  '
+		else:
+			god = ' year  '
+		self.f = time.strftime('%A, ') + sys_inf.Once() + ' ' + time.strftime('%h, ') + time.strftime('%G') + god
 		
-		# часы
-		f = time.strftime('%A, ') + sys_inf.Once() + ' ' + time.strftime('%h')
 		self.timer = wx.Timer(self)
 		self.Bind(wx.EVT_TIMER, self.update, self.timer)
 		self.timer.Start(1000)
@@ -365,7 +362,6 @@ class Upim_Manager(wx.Frame):
 		self.sb.SetBackgroundColour(conf_db.Dobd_class('colorviz').baz_vst())
 		self.sb.SetFieldsCount(3)
 		self.sb.SetStatusText(self.RetDay(), 2)
-		self.sb.SetStatusText(f, 1)
 		
 		# перетаскивать файлы
 		dt = drag_drop.FileDrop(self.win)
@@ -377,13 +373,25 @@ class Upim_Manager(wx.Frame):
 		self.Sz()
 		# ++++++++++++++++++++++
 		
+	def FilSt(self):# показывает файл в первом(0) отделе
+		if self.win.GetFilename() != '':
+			try:
+				if self.win.GetFilename().split('/')[6]:
+					ot = self.win.GetFilename().split('/')[6]
+			except:
+				ot = self.win.GetFilename()
+		else:
+			ot = _('New File')
+		return ot
+		
 # часики в статусбаре
 	def ChasY(self):
-		self.sb.SetStatusText(time.strftime('%H:%M:%S'), 0)
+		self.sb.SetStatusText(self.FilSt(), 0)
+		self.sb.SetStatusText(self.f + time.strftime('%H:%M:%S'), 1)
 		
 	def update(self, event):
 		self.ChasY()
-
+		
 # обновляющая-переключающая функ. 
 	def Pno(self, a, b):
 		try:
@@ -463,20 +471,28 @@ class Upim_Manager(wx.Frame):
 		im = sys_inf.ICON_PATH + 's1.png'
 		self.submenu = wx.Menu()
 		for i in conf_db.nedlist:
-			a = i.split('/')[6]
-			items = wx.MenuItem(self.submenu, -1, a.split('.')[0])
-			items.SetBitmap(wx.Bitmap(im))
-			self.Bind(wx.EVT_MENU, self.Lows, items)
-			self.submenu.AppendItem(items)
+			try:
+				if i.split('/')[6]:
+					a = i.split('/')[6]
+					items = wx.MenuItem(self.submenu, -1, a.split('.')[0])
+					items.SetBitmap(wx.Bitmap(im))
+					self.Bind(wx.EVT_MENU, self.Lows, items)
+					self.submenu.AppendItem(items)
+			except:
+				pass
 		self.PopupMenu(self.submenu)
 		
 	def Lows(self, event):
 		rec = self.submenu.FindItemById(event.GetId())
 		partc = rec.GetText().encode('utf-8').decode('latin-1').encode('latin-1')
 		for y in conf_db.nedlist:
-			if partc + '.ox' == y.split('/')[6]:
-				self.win.LoadFile(y)
-	
+			try:
+				if y.split('/')[6]:
+					if partc + '.ox' == y.split('/')[6]:
+						self.win.LoadFile(y)
+			except:
+				pass
+				
 	def On2(self, event):
 		wildcard= "Page ox (*.ox)|*.ox|"
 		dlg = wx.FileDialog(self, _("Choice file"), sys_inf.DATA_PATH, wildcard=wildcard, style=wx.OPEN)
@@ -485,13 +501,13 @@ class Upim_Manager(wx.Frame):
 			if path:
 				panel_richtext.Upim_Writer(path).Show()			
 		dlg.Destroy()
-	# печать - без бакгроунда!!!	
+	# печать	
 	def Print(self, event):
 		if self.win.GetFilename() != '':
 			self.printer = text.RichTextPrinting()
 			self.printer.GetPrintData()
 			self.printer.PrintFile(self.win.GetFilename())	
-				
+	# открыть...		
 	def On3(self, event):
 		wildcard= "Page ox (*.ox)|*.ox|"
 		dlg = wx.FileDialog(self, _("Choice file"), sys_inf.DATA_PATH, wildcard=wildcard, style=wx.OPEN)
@@ -525,7 +541,7 @@ class Upim_Manager(wx.Frame):
 	def To_Right(self, event):
 		self.win.ApplyAlignmentToSelection(text.TEXT_ALIGNMENT_RIGHT)
 		
-# статус этого дня		
+	# статус этого дня		
 	def RetDay(self):
 		files = sys_inf.CONF_PATH + 'prz.ini'
 		for i in open(files, 'rb').readlines():
@@ -551,18 +567,18 @@ class Upim_Manager(wx.Frame):
 			self.win.Clear()
 			self.win.WriteText('Not tutorial to ' + sys_inf.Loc().split('_')[1] + ' language! :-(')
 			
-# я не знаю доподлинно, что здесь написано	
+	# я не знаю доподлинно, что здесь написано	
 	def On9(self, event):	
 		description = """Upim Manager is an advanced content-richtext manager for 
 Linux operating system. Features include powerful richtext editor, 
-advanced search capabilities and more.
+advanced search capabilities and more...
 """
 		lic = '/usr/local/share/upim/LICENSE'
 		licence = open(lic, 'r').read()
 		info = wx.AboutDialogInfo()
 		info.SetName('Upim Manager')
 		info.SetIcon(wx.Icon(sys_inf.ICON_PATH + 'upim.png', wx.BITMAP_TYPE_PNG))
-		info.SetVersion('1.0.3')
+		info.SetVersion('1.0.4')
 		info.SetDescription(description)
 		info.SetCopyright('(C) 2013 - 2017 Victor Frig')
 		info.SetLicence(licence)
@@ -571,7 +587,7 @@ advanced search capabilities and more.
 
 
 	
-# картинки, примерные функции, шрифты-цвет	
+	# картинки, примерные функции, шрифты-цвет	
 	def OnImageOpen(self, event):
 		import imag
 		imag.TestFrame(self.win).Show()
@@ -616,7 +632,7 @@ advanced search capabilities and more.
 				self.win.SetStyle(r, attr)
 		dlg.Destroy()		
 		
-# визор заметок
+	# визор заметок
 	
 	def Wins(self):
 		self.win = text.RichTextCtrl(self, style = wx.DEFAULT_FRAME_STYLE)
@@ -660,11 +676,11 @@ advanced search capabilities and more.
 			
 		return self.win
 		
-# напоминания	
+	# напоминания	
 	def PanNaps(self, event):
 		os.system('python '+ sys_inf.UPIM_PATH + 'soxr_nap.py &')	
 		
-#	Background
+	#	Background
 	def col_back(self):
 		self.win.SetBackgroundColour(conf_db.Dobd_class('colorviz').baz_vst())
 
@@ -678,7 +694,7 @@ advanced search capabilities and more.
 		text.RichTextBuffer.AddHandler(text.RichTextHTMLHandler())
 		wx.FileSystem.AddHandler(wx.MemoryFSHandler())
 		
-# Вставка ссылки на файл	
+	# Вставка ссылки на файл	
 	def URL_L(self, event):
 		self.pnn = wx.Panel(self, -1, size=(280, 100), pos=(500, 400))
 		self.pnn.SetBackgroundColour('#7180A8')
@@ -707,7 +723,7 @@ advanced search capabilities and more.
 		self.win.EndStyle()
 		self.pnn.Destroy()
 		self.win.WriteText('      ')
-# п>		
+	# п>		
 	def Lines(self, event):
 		attr = text.TextAttrEx()
 		attr.SetFlags(text.TEXT_ATTR_LEFT_INDENT)
@@ -720,7 +736,7 @@ advanced search capabilities and more.
 			attr.SetFlags(text.TEXT_ATTR_LEFT_INDENT)
 			self.win.SetStyle(r, attr)
 			
-# чтоб не упустить			
+	# чтоб не упустить			
 	def OnCloseWindow(self, event):
 		if self.win.GetFilename().encode('utf-8').decode('latin-1').encode('latin-1') != '':
 			files = self.win.GetFilename().encode('utf-8').decode('latin-1').encode('latin-1')
@@ -735,7 +751,7 @@ advanced search capabilities and more.
 		else:
 			self.Destroy()
 		
-#последний файл --> в базу			
+	#последний файл --> в базу			
 	def PosFil(self, fl):
 		try:
 			if conf_db.Dobd_class('posfile').baz_vst():
@@ -744,7 +760,7 @@ advanced search capabilities and more.
 		except KeyError:
 			conf_db.Ubd_class('posfile', fl).baz_vsb()
 				
-# п<		
+	# п<		
 	def NewsLines(self, event):
 		attr = text.TextAttrEx()
 		attr.SetFlags(text.TEXT_ATTR_LEFT_INDENT)
@@ -758,7 +774,7 @@ advanced search capabilities and more.
 			attr.SetFlags(text.TEXT_ATTR_LEFT_INDENT)
 			self.win.SetStyle(r, attr)
 			
-# открыть ссылку на файл, url - святым копипастием			
+	# открыть ссылку на файл, url - святым копипастием			
 	def OnURL(self, event):
 		try:
 			if event.GetString().encode('utf-8').decode('latin-1').encode('latin-1').split('/')[6].split('.')[1] == 'ox':
@@ -769,13 +785,13 @@ advanced search capabilities and more.
 		except IndexError:
 			os.system('xdg-open ' + '"' + event.GetString().encode('utf-8').decode('latin-1').encode('latin-1') + '"' + ' &')
 		
-# мелочи
+	# мелочи
 	def Clears(self, event):
 		self.win.Clear()
 		
 	def OnClose(self, event):
 		self.Destroy()
-	
+	#
 	def FILE_ap(self, event):
 		dlg = wx.FileDialog(self, _("Choice file"), style=wx.OPEN)
 		if dlg.ShowModal() == wx.ID_OK:
@@ -814,7 +830,7 @@ advanced search capabilities and more.
 					self.Os(fil)
 	
 
-	def OnFileSaveHTML(self, event): #то же без бакгроунда, замените <body> на <body bgcolor='#цветхх'> и печатайте через браузер => в pdf
+	def OnFileSaveHTML(self, event):
 		tch = sys_inf.HOME_PATH
 		wildcard= "Page html (*.html)|*.html|"
 		dlg = wx.FileDialog(self, _("Create file"), tch, wildcard=wildcard, style=wx.SAVE)
@@ -847,7 +863,7 @@ advanced search capabilities and more.
 					self.win.SaveFile(savep)
 		dlg.Destroy()
 
-# ---------------------вот эта фор-ла "encode.decode" спасает от ужаса ru	
+# ---------------------вот эта фор-ла encode.decode спасает от ужаса ru	
 	def Vub(self, event):
 		if self.ch.GetValue().encode('utf-8').decode('latin-1').encode('latin-1') == _('Jan'):
 			m = 0
@@ -908,7 +924,6 @@ advanced search capabilities and more.
 		self.SetSizer(vbox)
 		self.Fit()
 
-		
 if __name__ == '__main__':	
 	app = wx.App()
 	Upim_Manager(None).Show()

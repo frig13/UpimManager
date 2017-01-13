@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Created on Fri Feb 14 16:14:33 2016
+Created on 2016-2017 year
 
-@author: Prohodimec 
+@author: FrIg aka Prohodimec 
 """
 import wx
 import os
@@ -33,7 +33,7 @@ class SimpleGrid(gridlib.Grid):
 		self.dt = wx.DateTime()
 		
 		self.lift = []
-		fo = sys_inf.DATA_PATH + 'Other/'# сканируем заметки для отображения в меню
+		fo = sys_inf.DATA_PATH + 'Other/'
 		for pap in os.listdir(fo):
 			filfo = fo + pap
 			if os.path.isdir(filfo):
@@ -128,13 +128,51 @@ class SimpleGrid(gridlib.Grid):
 				mm =  self.GetCellValue(ad, id)
 				if self.kol == mm:
 					if self.zet == 'Diary':
-						self.SetCellBackgroundColour(ad, id, conf_db.Dobd_class('cvetzm').baz_vst())
+						self.CatCal(ad, id, mm, 'Diary')
 						self.Chiick(ad, id, mm)
 					if self.zet == 'Calendar':
-						self.SetCellBackgroundColour(ad, id, conf_db.Dobd_class('cvetzam').baz_vst())
-						self.SetCellTextColour(ad, id, wx.RED)
-
-# матрица совмещения двух циклов - поиск дней с заметками					
+						self.CatCal(ad, id, mm, 'Calendar')
+						
+	#управление цветами категорий 1ф.
+	def CatCal(self, ads, ids, ch, bn):
+		if bn == 'Diary':
+			for fil in os.listdir(self.ui):
+				if int(fil.split(':')[0]) == int(ch):
+					if int(fil.split(':')[0]) != int(self.days):
+						self.CvetCol(fil, ads, ids, 0)
+		if bn == 'Calendar':
+			for fil in os.listdir(self.ui):
+				if int(fil.split(':')[0]) == int(ch):
+					if int(fil.split(':')[0]) != int(self.days):
+						self.CvetCol(fil, ads, ids, 1)
+					
+		
+		 #управление цветами категорий 2ф.
+	def CvetCol(self, file, x, y, z):
+		if conf_db.dbcat(file) == _('important'):
+			self.SetCellBackgroundColour(x, y, '#FF297D')
+			self.SetCellTextColour(x, y, '#FFFFFF')
+		elif conf_db.dbcat(file) == _('personal'):
+			self.SetCellBackgroundColour(x, y, '#575DE5')
+			self.SetCellTextColour(x, y, '#C2D600')
+		elif conf_db.dbcat(file) == _('holidays'):
+			self.SetCellBackgroundColour(x, y, '#29FF3D')
+			self.SetCellTextColour(x, y, '#FF29EA')
+		elif conf_db.dbcat(file) == _('achievement'):
+			self.SetCellBackgroundColour(x, y, '#9C75FF')
+			self.SetCellTextColour(x, y, '#D7FF3D')		
+		elif conf_db.dbcat(file) == _('reminders'):
+			self.SetCellBackgroundColour(x, y, '#EAFF29')
+			self.SetCellTextColour(x, y, '#000000')				
+		elif conf_db.dbcat(file) == _('black days'):
+			self.SetCellBackgroundColour(x, y, '#000000')
+			self.SetCellTextColour(x, y, '#FFFFFF')	
+		else:
+			if z == 0:
+				self.SetCellBackgroundColour(x, y, conf_db.Dobd_class('cvetzm').baz_vst())
+			else:
+				self.SetCellBackgroundColour(x, y, conf_db.Dobd_class('cvetzam').baz_vst())
+# функция совмещения двух циклов - поиск дней с заметками					
 	def Noisk(self):
 		for z in self.chis:
 			if str(z) == '01':
@@ -253,12 +291,22 @@ class SimpleGrid(gridlib.Grid):
 	def OnCellRightClick(self, evt):
 		self.click = self.GetCellValue(evt.GetRow(), evt.GetCol())
 		self.popupmenus = wx.Menu()
+		#иконки категорий
+		m = sys_inf.ICON_PATH + 'vaj.png'
+		m2 = sys_inf.ICON_PATH + 'lic.png'
+		m3 = sys_inf.ICON_PATH + 'prz.png'
+		m4 = sys_inf.ICON_PATH + 'pam.png'
+		m5 = sys_inf.ICON_PATH + 'che.png'
+		m6 = sys_inf.ICON_PATH + 'sna.png'
+		m7 = sys_inf.ICON_PATH + 'dost.png'
+		#иконки категорий
 		f = sys_inf.ICON_PATH + 'et1.png'
 		fil3f = sys_inf.ICON_PATH + 'cut.png'
 		self.flist = []		
 		if os.path.exists(self.ui):
 			for fol in os.listdir(self.ui):
 				if int(fol.split(':')[0]) == int(self.click.split('\n')[0]):
+					submenu2 = wx.Menu()
 					pop = fol.split('.')[0]
 					self.flist.append(pop)
 					ite0 = wx.MenuItem(self.popupmenus, -1, pop)
@@ -266,6 +314,39 @@ class SimpleGrid(gridlib.Grid):
 					self.popupmenus.AppendItem(ite0)
 					self.Bind(wx.EVT_MENU, self.OP2, ite0)
 					self.popupmenus.AppendSeparator()
+					#категории
+					itm = wx.MenuItem(submenu2, -1, _('important'))		
+					itm.SetBitmap(wx.Bitmap(m))
+					submenu2.AppendItem(itm)
+					self.Bind(wx.EVT_MENU, self.CalCat, itm)
+					itm2 = wx.MenuItem(submenu2, -1, _('personal'))		
+					itm2.SetBitmap(wx.Bitmap(m2))
+					submenu2.AppendItem(itm2)
+					self.Bind(wx.EVT_MENU, self.CalCat, itm2)
+					itm3 = wx.MenuItem(submenu2, -1, _('holidays'))		
+					itm3.SetBitmap(wx.Bitmap(m3))
+					submenu2.AppendItem(itm3)
+					self.Bind(wx.EVT_MENU, self.CalCat, itm3)
+					itm4 = wx.MenuItem(submenu2, -1, _('reminders'))		
+					itm4.SetBitmap(wx.Bitmap(m4))
+					submenu2.AppendItem(itm4)
+					self.Bind(wx.EVT_MENU, self.CalCat, itm4)
+					itm7 = wx.MenuItem(submenu2, -1, _('achievement'))		
+					itm7.SetBitmap(wx.Bitmap(m7))
+					submenu2.AppendItem(itm7)
+					self.Bind(wx.EVT_MENU, self.CalCat, itm7)
+					itm5 = wx.MenuItem(submenu2, -1, _('black days'))		
+					itm5.SetBitmap(wx.Bitmap(m5))
+					submenu2.AppendItem(itm5)
+					self.Bind(wx.EVT_MENU, self.CalCat, itm5)
+					submenu2.AppendSeparator()
+					itm6 = wx.MenuItem(submenu2, -1, _('delete category'))		
+					itm6.SetBitmap(wx.Bitmap(m6))
+					submenu2.AppendItem(itm6)
+					self.Bind(wx.EVT_MENU, self.CalCat, itm6)
+					self.popupmenus.AppendMenu(-1, _("Add category"), submenu2)
+					self.popupmenus.AppendSeparator()
+					#категории
 		if self.zet == 'Calendar':
 			fs = sys_inf.ICON_PATH + 'ev.png'
 			submenu = wx.Menu()
@@ -275,11 +356,11 @@ class SimpleGrid(gridlib.Grid):
 				submenu.AppendItem(it)
 				submenu.Bind(wx.EVT_MENU, self.OP5, it)	
 			self.popupmenus.AppendMenu(-1, _("Notes"), submenu)
-			self.popupmenus.AppendSeparator()
-		ite3 = wx.MenuItem(self.popupmenus, -1, _("Remove all notes day"))
-		ite3.SetBitmap(wx.Bitmap(fil3f))
-		self.popupmenus.AppendItem(ite3)
-		self.Bind(wx.EVT_MENU, self.OP3, ite3)
+			self.popupmenus.AppendSeparator()	
+		itedel = wx.MenuItem(self.popupmenus, -1, _("Remove all notes day"))
+		itedel.SetBitmap(wx.Bitmap(fil3f))
+		self.popupmenus.AppendItem(itedel)
+		self.Bind(wx.EVT_MENU, self.OP3, itedel)
 		self.PopupMenu(self.popupmenus)
 		
 # функция движения по каталогам год:месяц и возвращающая месяц	
@@ -341,7 +422,8 @@ class SimpleGrid(gridlib.Grid):
 		if os.path.exists(self.ui):
 			for f in os.listdir(self.ui):
 				self.chis.append(f.split(':')[0])
-# функции биндинга
+				
+# функция LeftClick биндинга
 	def OnCellLeftClick(self, evt):
 		value = self.GetCellValue(evt.GetRow(), evt.GetCol()).encode('utf-8').decode('latin-1').encode('latin-1')
 		for fil in os.listdir(self.ui):
@@ -353,11 +435,22 @@ class SimpleGrid(gridlib.Grid):
 				elif self.zet == 'Calendar':
 					panel_richtext.Upim_Writer(patch=pt).Show()
 					
-# функция вида дней с заметками					
+# биндинг категорий 
+	def CalCat(self, evt):
+		itemc = self.popupmenus.FindItemById(evt.GetId())
+		itemcs = itemc.GetText().encode('utf-8').decode('latin-1').encode('latin-1')
+		pr = self.click.encode('utf-8').decode('latin-1').encode('latin-1')
+		for fil in os.listdir(self.ui):
+			if int(fil.split(':')[0]) == int(pr.split('\n')[0]):
+				if itemcs != 'снять категорию':
+					conf_db.catdb(fil, itemcs)
+				else:
+					conf_db.rmcat(fil) 
+	
+# функция вида дней с заметками	
 	def Chiick(self, ad, id, vk):
 		for fil in os.listdir(self.ui):
 			if int(fil.split(':')[0]) == int(vk):
-				self.SetCellTextColour(ad, id, conf_db.Dobd_class('cvetnfd').baz_vst())
 				self.SetCellFont(ad, id, wx.Font(10, wx.SWISS, wx.NORMAL, wx.BOLD))
 				kd = fil.split(':')[2]
 				hj = kd.split('.')[0]
@@ -372,8 +465,7 @@ class SimpleGrid(gridlib.Grid):
 				else:
 					self.SetCellFont(ad, id, wx.Font(17, wx.SWISS, wx.NORMAL, wx.BOLD))
 					self.SetCellValue(ad, id, str(vk))
-				
-# биндинг - открытие, удаление заметок				
+#	эвенты
 	def OP3(self, event):
 		for fol in os.listdir(self.ui):
 			if int(fol.split(':')[0]) == int(self.click.split('\n')[0]):

@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Created on Fri Feb 14 16:14:33 2016
+Created on 2016-2017 year
 
 @author: Prohodimec 
 """
-# проcтенькие функции и классы для работы с bd
+# простенькие функции и классы для работы с bd_shelve
 import shelve
 import os
 import sys_inf
 
+# классы конфигурации
 class Ubd_class:
 	def __init__(self, keys, opch):
 		self.keys = keys
@@ -33,6 +34,8 @@ class Dobd_class:
 					return bd[i]
 			bd.close() 
 			
+			
+# создание, поиск, удаление			
 def Ds(slovo, lists):
 	fil = sys_inf.CONF_PATH + 'index.db'
 	o = shelve.open(fil)
@@ -42,7 +45,7 @@ def Ds(slovo, lists):
 			lists.append(i.split('.')[0])
 
 	o.close()
-# база индекса заметок для поиска
+
 def searcingdb(tops):
 	fills = sys_inf.CONF_PATH + 'index.db'
 	op = shelve.open(fills)
@@ -57,7 +60,30 @@ def dobdb(keynam, texnam):
 	bd = shelve.open(fils)
 	bd[keynam] = texnam
 	bd.close()
-# база недели
+
+# создание, поиск, удаление	
+def catdb(keynam, texnam):
+	filc = sys_inf.CONF_PATH + 'cat.db'
+	bdcat = shelve.open(filc)
+	bdcat[keynam] = texnam
+	bdcat.close()
+	
+def dbcat(knam):
+	fc = sys_inf.CONF_PATH + 'cat.db'
+	bdct = shelve.open(fc)
+	for kl in list(bdct.keys()):
+		if  kl == knam:
+			return bdct[kl]
+	bdct.close()
+def rmcat(rmnam):
+	frm = sys_inf.CONF_PATH + 'cat.db'
+	bdrm = shelve.open(frm)
+	for rmn in list(bdrm.keys()):
+		if  rmn == rmnam:
+			bdrm.__delitem__(rmnam)
+	bdrm.close()
+	
+# создание, поиск, удаление
 def dbdb(keynam, texnam):
 	fils = sys_inf.CONF_PATH + 'ned.db'
 	bd = shelve.open(fils)
@@ -77,7 +103,7 @@ def sdb(k):
 	bdlw = shelve.open(filw)
 	return bdlw[k]
 	
-# история заметок на сессию для UM	
+# листы для запоминаниия заметок на сессию	
 nedlist = []
 def Listrem(fils):
 	if len(nedlist) > 0:
@@ -88,5 +114,4 @@ def Listrem(fils):
 
 dlist = []
 def Lists(pth):
-	#if pth not in dlist:
-	dlist.append(pth)		
+	dlist.append(pth)
