@@ -10,7 +10,7 @@ from distutils.file_util import copy_file
 
 # простейший модуль, своего рода биос для UM, что бы этот не пал, если чего-то не станет по вине пользователя.
 DP = sys_inf.DATA_PATH
-LIST_PATH = [DP, DP + 'Data', DP + 'Other', DP + 'Pattern', DP + 'Text', sys_inf.CONF_PATH]
+LIST_PATH = [DP, DP + 'Data', DP + 'Other', sys_inf.CONF_PATH]
 
 for pt in LIST_PATH:
 	if os.path.exists(pt):
@@ -50,10 +50,3 @@ else:
 	else:
 		os.system('touch ' + PRZINI_PATH)
 		os.system('echo "31:jan;NewYers"> ' + PRZINI_PATH)
-	
-SHAB = DP + 'Pattern/shab'
-if os.path.exists(SHAB):
-	pass
-else:
-	copy_file('/usr/local/share/upim/shab', SHAB)
-	os.system('touch ' + DP + 'Pattern/stock')

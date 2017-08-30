@@ -1,9 +1,9 @@
 			############
 			# UpimManager #
-			#     v 1.0.4       #
+			#     v 1.0.5       #
 			############
 
-	UpimManager-1.0.4 - richtext content manager and diary for Linux.
+	UpimManager-1.0.5 - richtext content manager and diary for Linux like OS.
 						
 Requires: OS: Linux; python2 >= 2.7.5 < 3.X.X; wxPython == 2.8.12.1; mpg123 or mpg321 - for play melody to remember
 

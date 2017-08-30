@@ -205,10 +205,10 @@ class Upim_Manager(wx.Frame):
 		menu4.AppendItem(ito)
 		self.Bind(wx.EVT_MENU, self.OnRed, ito)
 		
-		itd = wx.MenuItem(menu4, -1, _('Open pattern day for edit'))
-		itd.SetBitmap(wx.Bitmap(kit))
-		menu4.AppendItem(itd)
-		self.Bind(wx.EVT_MENU, self.OnRed2, itd)	
+	#	itd = wx.MenuItem(menu4, -1, _('Open pattern day for edit'))
+	#	itd.SetBitmap(wx.Bitmap(kit))
+	#	menu4.AppendItem(itd)
+	#	self.Bind(wx.EVT_MENU, self.OnRed2, itd)	
 
 		itp = wx.MenuItem(menu4, -1, _('Open prz.ini for edit'))
 		itp.SetBitmap(wx.Bitmap(kit))
@@ -441,7 +441,7 @@ class Upim_Manager(wx.Frame):
 		if self.dis[1] > 600:# никак не укладывается в меньше...
 			tabCald =  Sheet.NedSheet(self.notebook3)
 			self.notebook3.AddPage(tabCald, _("Real Week"))
-		tabDay = day.Seg_Day(self.notebook3)
+		tabDay = day.Day_pan(self.notebook3, self.win)
 		self.notebook3.AddPage(tabDay, _("Day"))
 		self.gsizer3 = wx.BoxSizer(wx.VERTICAL)
 		self.gsizer3.Add(self.notebook3, 1, wx.ALL|wx.EXPAND, 0)
@@ -569,8 +569,8 @@ class Upim_Manager(wx.Frame):
 			
 	# я не знаю доподлинно, что здесь написано	
 	def On9(self, event):	
-		description = """Upim Manager is an advanced content-richtext manager for 
-Linux operating system. Features include powerful richtext editor, 
+		description = """Upim Manager is an advanced diary and content-richtext manager for 
+Linux like operating system. Features include powerful richtext editor, 
 advanced search capabilities and more...
 """
 		lic = '/usr/local/share/upim/LICENSE'
@@ -578,7 +578,7 @@ advanced search capabilities and more...
 		info = wx.AboutDialogInfo()
 		info.SetName('Upim Manager')
 		info.SetIcon(wx.Icon(sys_inf.ICON_PATH + 'upim.png', wx.BITMAP_TYPE_PNG))
-		info.SetVersion('1.0.4')
+		info.SetVersion('1.0.5')
 		info.SetDescription(description)
 		info.SetCopyright('(C) 2013 - 2017 Victor Frig')
 		info.SetLicence(licence)
@@ -662,7 +662,9 @@ advanced search capabilities and more...
 				try:
 					if i.split(';')[2]:
 						im = wx.Image(i.split(';')[2].strip(), wx.BITMAP_TYPE_ANY)   
-						self.win.WriteImage(im)
+						if  im.GetWidth() < 128:
+							if im.GetHeight() < 128:
+								self.win.WriteImage(im)
 				except IndexError:
 					pass
 				break

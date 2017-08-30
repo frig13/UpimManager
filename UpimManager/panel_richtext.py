@@ -340,7 +340,9 @@ class Upim_Writer(wx.Frame):
 				try:
 					if i.split(';')[2]:
 						im = wx.Image(i.split(';')[2].strip(), wx.BITMAP_TYPE_ANY)   
-						self.win.WriteImage(im)
+						if  im.GetWidth() < 128:
+							if im.GetHeight() < 128:
+								self.win.WriteImage(im)
 				except IndexError:
 					pass
 				break
@@ -530,7 +532,7 @@ class Upim_Writer(wx.Frame):
 		licence = open(lic, 'r').read()
 		info = wx.AboutDialogInfo()
 		info.SetName('Upim Writer')
-		info.SetVersion('1.0.4')
+		info.SetVersion('1.0.5')
 		info.SetDescription(description)
 		info.SetCopyright('(C) 2013 - 2017 Victor Frig')
 		info.SetLicence(licence)

@@ -26,7 +26,6 @@ class TabPanel(wx.Panel):
 		self.dis = sys_inf.Sizer()
 		self.SetMinSize((self.dis[6], self.dis[2]))
 		self.tcTree = wx.TreeCtrl(self, size=(self.dis[6], self.dis[2]-25), pos=(0, 25))
-		
 		# кнопки свернуть-развернуть, вверх-вниз
 		sv = wx.BitmapButton(self, -1, wx.Bitmap(sys_inf.ICON_PATH + 'cver.png', wx.BITMAP_TYPE_PNG), pos=(0,0), size=(25, 25), style=wx.NO_BORDER)
 		sv.Bind(wx.EVT_BUTTON, self.Coll, sv)

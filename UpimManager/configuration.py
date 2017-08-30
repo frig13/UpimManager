@@ -57,10 +57,10 @@ class TabPan(wx.Panel):# панель основных настроек
 		wx.StaticLine(self, -1, (240, 79), (320, 5), style=wx.LI_HORIZONTAL)
 # линия дня(продолжительность(число знаков(рис. на кнопке 'равно'('='))))
 		wx.StaticText(self, -1, _("Wide line [* '-']"), (360, 10))
-		self.txl = wx.TextCtrl(self, -1, conf_db.Dobd_class('ul').baz_vst(), size=(60, 30), pos=(270, 36))
-		wx.StaticText(self, -1, _("To UM/UW"), (335, 40))
-		self.txl2 = wx.TextCtrl(self, -1, conf_db.Dobd_class('dl').baz_vst(), size=(60, 30), pos=(410, 36))
-		wx.StaticText(self, -1, _("To Daysheet"), (473, 40))
+		self.txl = wx.TextCtrl(self, -1, conf_db.Dobd_class('ul').baz_vst(), size=(160, 30), pos=(270, 36))
+		wx.StaticText(self, -1, _("To UM/UW"), (455, 40))
+		#self.txl2 = wx.TextCtrl(self, -1, conf_db.Dobd_class('dl').baz_vst(), size=(60, 30), pos=(410, 36))
+		#wx.StaticText(self, -1, _("To Daysheet"), (473, 40))
 # шрифты и их размер для день-транспоранта и запись-лозунга
 		motd11 = ['Times', 'Times New Roman', 'Comic Sans MS', 'Exposure COutline', 'FreeMono', 'FreeSans', 'Monospace', 'Pet Me', 'PR Number 3', 'QumpellkaNo12']
 		self.cfh33 = wx.ComboBox(self, -1, value = conf_db.Dobd_class('fontdays').baz_vst(), choices=motd11, size=(180, 30), pos=(270, 110), style=wx.CB_DROPDOWN)

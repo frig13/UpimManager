@@ -13,11 +13,11 @@ if sys.version.split('.')[0] != '2':# Если пайтон-3 - не устан�
 try:# если нет или не та версия wx - не установится!
 	import wx
 	if wx.__version__ != '2.8.12.1':
-		print 'UpimManager requires the wxPython-2.8.12.1'
+		print 'UpimManager requires the wxPython==version 2.8.12.1'
 		sys.exit(0)
 except:
 	print ''
-	print 'UpimManager requires the wxPython version 2.8.12.1'
+	print 'UpimManager requires the wxPython == version 2.8.12.1'
 	sys.exit(0)
 
 LOC_PREFIX = '/usr/local/'	
