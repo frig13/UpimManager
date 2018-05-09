@@ -83,25 +83,6 @@ def rmcat(rmnam):
 			bdrm.__delitem__(rmnam)
 	bdrm.close()
 	
-# создание, поиск, удаление
-def dbdb(keynam, texnam):
-	fils = sys_inf.CONF_PATH + 'ned.db'
-	bd = shelve.open(fils)
-	bd[keynam] = texnam
-	bd.close()	
-
-def cldb():
-	fil = sys_inf.CONF_PATH + 'ned.db'
-	bdl = shelve.open(fil)
-	for a in list(bdl.keys()):
-		if a != '20:70':
-			bdl.__delitem__(a)
-	bdl.close()	
-
-def sdb(k):
-	filw = sys_inf.CONF_PATH + 'ned.db'
-	bdlw = shelve.open(filw)
-	return bdlw[k]
 	
 # листы для запоминаниия заметок на сессию	
 nedlist = []

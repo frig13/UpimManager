@@ -16,9 +16,7 @@ import uni_pan
 import sys_inf
 import searching
 import soxr_diary
-import Sheet
 import drag_drop
-import day
 import validate
 sys_inf.GetTxt()
 
@@ -438,11 +436,6 @@ class Upim_Manager(wx.Frame):
 		self.notebook3 = wx.Notebook(self.panel3)
 		tabCal =  Caldar.SimpleGrid(self.notebook3, c, d, self.win, self.dis[4], self.dis[5], 'Diary')
 		self.notebook3.AddPage(tabCal, _("Calendar"))
-		if self.dis[1] > 600:# никак не укладывается в меньше...
-			tabCald =  Sheet.NedSheet(self.notebook3)
-			self.notebook3.AddPage(tabCald, _("Real Week"))
-		tabDay = day.Day_pan(self.notebook3, self.win)
-		self.notebook3.AddPage(tabDay, _("Day"))
 		self.gsizer3 = wx.BoxSizer(wx.VERTICAL)
 		self.gsizer3.Add(self.notebook3, 1, wx.ALL|wx.EXPAND, 0)
 		self.panel3.SetSizer(self.gsizer3)

@@ -49,4 +49,4 @@ else:
 		copy_file('/usr/local/share/upim/prz.ini', PRZINI_PATH)
 	else:
 		os.system('touch ' + PRZINI_PATH)
-		os.system('echo "31:jan;NewYers"> ' + PRZINI_PATH)
+		os.system('echo "31:jan;NewYears"> ' + PRZINI_PATH)
